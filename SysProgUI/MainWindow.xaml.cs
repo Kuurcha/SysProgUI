@@ -21,10 +21,11 @@ namespace SysProgUI
     /// </summary>
     public partial class MainWindow : Window
     {
+        TabItem[] tabArray;
         public MainWindow()
         {
-            //InitializeComponent();
-         
+            InitializeComponent();
+
             //Button btn = new Button();
             //btn.FontWeight = FontWeights.Bold;
 
@@ -49,7 +50,12 @@ namespace SysProgUI
             //btn.Background = Brushes.Magenta;
             //canvas.Children.Add(btn);
             //var fileDialog = new OpenFileDialog();
-
+            //int length = this.MainTabControl.Items.Count;
+            var itemTabs = this.MainTabControl.Items;
+            List<TabItem> tabList = new List<TabItem>();
+            foreach (object item in itemTabs)
+                tabList.Add((TabItem)item);
+            tabArray = tabList.ToArray();
         }
         private void Canvas_MouseUp(object sender, MouseButtonEventArgs e)
         {
@@ -70,6 +76,25 @@ namespace SysProgUI
         {
             if (e.ChangedButton == MouseButton.Left)
                 this.DragMove();
+        }
+
+
+
+
+        private void RadioButton_Checked(object sender, RoutedEventArgs e)
+        {
+            RadioButton rb = sender as RadioButton;
+            rb.SetCurrentValue(ForegroundProperty, new SolidColorBrush(Color.FromRgb(120, 120, 120)));
+            foreach (TabItem item in tabArray)
+                if (item.Header.Equals(rb.Content))
+                        this.MainTabControl.SelectedItem = item;
+      
+        }
+
+        private void RadioButton_Unchecked(object sender, RoutedEventArgs e)
+        {
+            RadioButton rb = sender as RadioButton;
+            rb.SetCurrentValue(ForegroundProperty, new SolidColorBrush(Color.FromRgb(219, 220, 230)));
         }
     }
 }

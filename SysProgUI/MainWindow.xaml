@@ -18,6 +18,9 @@
             BasedOn="{StaticResource {x:Type ToggleButton}}"
             TargetType="{x:Type RadioButton}"
             x:Key="ChangedColorRadiobutton">
+            <Style.Triggers>
+
+            </Style.Triggers>
             <Setter Property="Background" Value="#4864B3"/>
             <Setter Property="Foreground" Value="#DBDCE6"/>
             <Setter Property="FontSize" Value="16"/>
@@ -25,23 +28,36 @@
             <Setter Property="Width" Value="Auto"/>
             <Setter Property="Height" Value="Auto"/>
             <Setter Property="Padding" Value="0,0,0,0"/>
-            <Style.Triggers>
-                <Trigger Property="IsChecked" Value="true">
-                    <Setter Property = "Foreground" Value="Green"/>
-                </Trigger>
-            </Style.Triggers>
+            <EventSetter Event="Checked" Handler="RadioButton_Checked"/>
+            <EventSetter Event="Unchecked" Handler="RadioButton_Unchecked"/>
+        </Style>
+        <Style 
+            BasedOn="{StaticResource {x:Type TabItem}}"
+            TargetType="{x:Type TabItem}"
+            x:Key="HiddenTabs">
+            <Setter Property="Visibility" Value="Hidden"/>
+            <Setter Property="Grid.Background" Value="Transparent"/>
+        </Style>
+        <Style 
+            BasedOn="{StaticResource {x:Type RadioButton}}"
+            TargetType="{x:Type RadioButton}"
+            x:Key="RadioButtonText">
+            <Setter Property="FontSize" Value="16"/>
+            <Setter Property="VerticalAlignment" Value="Top"/>
+            <Setter Property="VerticalContentAlignment" Value="Center"/>
+            <Setter Property="Foreground" Value="#DBDCE6"/>
         </Style>
     </Window.Resources>
-    
+
     <Border BorderBrush="#A1AAD2" BorderThickness="2" CornerRadius="6" MouseDown="Border_MouseDown">
         <Border.Background>
             <LinearGradientBrush EndPoint="0.5,1" StartPoint="0.5,0">
                 <GradientStop Color="#949BC0" Offset="0.9"/>
                 <GradientStop Color="#686C94" Offset="0.5"/>
                 <GradientStop Color="#949BC0" />
-            </LinearGradientBrush>  
+            </LinearGradientBrush>
         </Border.Background>
-        
+
         <Grid Height="40" VerticalAlignment="Top">
             <Grid.RowDefinitions>
                 <RowDefinition Height="*"></RowDefinition>
@@ -56,15 +72,42 @@
             <Button Grid.Column="1" Style="{StaticResource {x:Static ToolBar.ButtonStyleKey}}" Background ="#4864B3" Foreground ="#DEDEDE" FontSize = "16" HorizontalAlignment="Right"  Width="45" Click="Button_Click">X</Button>
             <DockPanel Grid.Column="0" Grid.Row="0" VerticalAlignment="Center"   Margin="0,0,0,0" x:Name="mainPanel" HorizontalAlignment="Left">
                 <RadioButton  BorderBrush="#48517F" BorderThickness="1" Style="{StaticResource ChangedColorRadiobutton}" Content=" СУБД "                    GroupName="View" />
-                <RadioButton  BorderBrush="#48517F" BorderThickness="1" Style="{StaticResource ChangedColorRadiobutton}" Content=" Конструкция языка"        GroupName="View" />
-                <RadioButton  BorderBrush="#48517F" BorderThickness="1" Style="{StaticResource ChangedColorRadiobutton}" Content=" Ассемблерные вставки"     GroupName="View"/>
+                <RadioButton  BorderBrush="#48517F" BorderThickness="1" Style="{StaticResource ChangedColorRadiobutton}" Content=" Конструкция языка "        GroupName="View" />
+                <RadioButton  BorderBrush="#48517F" BorderThickness="1" Style="{StaticResource ChangedColorRadiobutton}" Content=" Ассемблерные вставки "     GroupName="View" />
                 <RadioButton  BorderBrush="#48517F" BorderThickness="1" Style="{StaticResource ChangedColorRadiobutton}" Content=" Log "                     GroupName="View" />
             </DockPanel>
+            <TabControl Grid.Column="0" Background="Transparent" Foreground="Transparent" Margin="10,16,10,-538" Grid.ColumnSpan="2" Name = "MainTabControl">
+                <TabItem Style= "{StaticResource HiddenTabs}" Header=" СУБД ">
+                    <Label Content="1"/>
+                </TabItem>
+                <TabItem Style ="{StaticResource HiddenTabs}" Header=" Конструкция языка ">
+                    <Grid VerticalAlignment="Top" >
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="*"></RowDefinition>
+                            <RowDefinition Height="Auto"></RowDefinition>
+                            <RowDefinition Height="Auto"></RowDefinition>
+                        </Grid.RowDefinitions>
+                        <RadioButton Style="{StaticResource RadioButtonText}" Content="If/Else" GroupName="Temp" IsChecked="True"/>
+                        <RadioButton Style="{StaticResource RadioButtonText}" Grid.Row ="1" Content ="Foreach" GroupName="Temp"/>
+                        <TextBox Grid.Row="2" Background="Transparent" BorderThickness="3" Height="200"> </TextBox>
+                    </Grid>
+              
+                </TabItem>
+                <TabItem Style ="{StaticResource HiddenTabs}" Header=" Ассемблерные вставки ">
+                    <Label Content="3"/>
+                </TabItem>
+                <TabItem Style ="{StaticResource HiddenTabs}" Header=" Log ">
+                    <Label Content="4"/>
+                </TabItem>
+              
+
+
+            </TabControl>
         </Grid>
-       
+
 
     </Border>
-    
+
 
 
 

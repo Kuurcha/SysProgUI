@@ -18,9 +18,6 @@
             BasedOn="{StaticResource {x:Type ToggleButton}}"
             TargetType="{x:Type RadioButton}"
             x:Key="ChangedColorRadiobutton">
-            <Style.Triggers>
-
-            </Style.Triggers>
             <Setter Property="Background" Value="#4864B3"/>
             <Setter Property="Foreground" Value="#DBDCE6"/>
             <Setter Property="FontSize" Value="16"/>
@@ -30,6 +27,8 @@
             <Setter Property="Padding" Value="0,0,0,0"/>
             <EventSetter Event="Checked" Handler="RadioButton_Checked"/>
             <EventSetter Event="Unchecked" Handler="RadioButton_Unchecked"/>
+            <EventSetter Event="MouseEnter" Handler="Universal_MouseEnter"/>
+            <EventSetter Event="MouseLeave" Handler="Universal_MouseLeave"/>
         </Style>
         <Style 
             BasedOn="{StaticResource {x:Type TabItem}}"
@@ -47,6 +46,37 @@
             <Setter Property="VerticalContentAlignment" Value="Center"/>
             <Setter Property="Foreground" Value="#DBDCE6"/>
         </Style>
+        <Style x:Key="FlatButton"    
+               BasedOn="{StaticResource {x:Type Button}}"
+               TargetType="{x:Type Button}">
+
+            <Setter Property="Control.Background" Value="#4864B3" />
+            <Setter Property="Foreground" Value="#DBDCE6"/>
+            <Setter Property="Width" Value="Auto"/>
+            <Setter Property="HorizontalAlignment" Value="Left"/>
+            <Setter Property="FontSize" Value="14"/>
+            <EventSetter Event="MouseEnter" Handler="Universal_MouseEnter"/>
+            <EventSetter Event="MouseLeave" Handler="Universal_MouseLeave"/>
+            <!-- #787878 -->
+
+            <Style.Triggers>
+                <Trigger Property="Control.IsMouseOver" Value="True">
+                    <Setter Property="Control.Foreground" Value="#787878" />
+                </Trigger>
+                <Trigger Property="Control.IsMouseOver" Value="False">
+                    <Setter Property="Control.Foreground" Value="#DBDCE6"/>
+                </Trigger>
+                <Trigger Property="Control.IsFocused" Value="True">
+                    <Setter Property="Control.Foreground" Value="#787878" />
+                </Trigger>
+                <Trigger Property="Control.IsFocused" Value="False">
+                    <Setter Property="Control.Foreground" Value="#DBDCE6"  />
+                </Trigger>
+            </Style.Triggers>
+        </Style>
+
+
+
     </Window.Resources>
 
     <Border BorderBrush="#A1AAD2" BorderThickness="2" CornerRadius="6" MouseDown="Border_MouseDown">
@@ -76,20 +106,28 @@
                 <RadioButton  BorderBrush="#48517F" BorderThickness="1" Style="{StaticResource ChangedColorRadiobutton}" Content=" Ассемблерные вставки "     GroupName="View" />
                 <RadioButton  BorderBrush="#48517F" BorderThickness="1" Style="{StaticResource ChangedColorRadiobutton}" Content=" Log "                     GroupName="View" />
             </DockPanel>
-            <TabControl Grid.Column="0" Background="Transparent" Foreground="Transparent" Margin="10,16,10,-538" Grid.ColumnSpan="2" Name = "MainTabControl">
+            <TabControl Grid.Column="0" Background="Transparent" Foreground="Transparent" Margin="10,16,10,-480" Grid.ColumnSpan="2" Name = "MainTabControl" RenderTransformOrigin="0.509,0.52">
                 <TabItem Style= "{StaticResource HiddenTabs}" Header=" СУБД ">
                     <Label Content="1"/>
                 </TabItem>
                 <TabItem Style ="{StaticResource HiddenTabs}" Header=" Конструкция языка ">
                     <Grid VerticalAlignment="Top" >
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="*" />
+                            <ColumnDefinition Width="auto" />
+                        </Grid.ColumnDefinitions>
                         <Grid.RowDefinitions>
+
                             <RowDefinition Height="*"></RowDefinition>
+                            <RowDefinition Height="Auto"></RowDefinition>
                             <RowDefinition Height="Auto"></RowDefinition>
                             <RowDefinition Height="Auto"></RowDefinition>
                         </Grid.RowDefinitions>
                         <RadioButton Style="{StaticResource RadioButtonText}" Content="If/Else" GroupName="Temp" IsChecked="True"/>
                         <RadioButton Style="{StaticResource RadioButtonText}" Grid.Row ="1" Content ="Foreach" GroupName="Temp"/>
-                        <TextBox Grid.Row="2" Background="Transparent" BorderThickness="3" Height="200"> </TextBox>
+                        <TextBox Grid.Row="2" Foreground="#DBDCE6" FontSize="14" Grid.ColumnSpan="2" Background="Transparent" BorderThickness="3" Height="410" VerticalAlignment="Stretch"> </TextBox>
+                        <Button Grid.Row="3" Content = "  Получить  " Style="{StaticResource FlatButton}"> </Button>
+                        <Label Grid.Row ="3" Grid.Column ="1" HorizontalAlignment="Left" VerticalAlignment="Top" Content="Тут могла быть ваша реклама" FontSize="14" Foreground="#DBDCE6"></Label>
                     </Grid>
               
                 </TabItem>
@@ -99,7 +137,8 @@
                 <TabItem Style ="{StaticResource HiddenTabs}" Header=" Log ">
                     <Label Content="4"/>
                 </TabItem>
-              
+          
+
 
 
             </TabControl>

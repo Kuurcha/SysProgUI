@@ -95,6 +95,35 @@ namespace SysProgUI
         {
             RadioButton rb = sender as RadioButton;
             rb.SetCurrentValue(ForegroundProperty, new SolidColorBrush(Color.FromRgb(219, 220, 230)));
+
+        }
+
+        /// <summary>
+        /// Метод отвечающий за изменение подсветки шрифта (свойства Forecolor), и проверяющий на случай если это нажатая Radiobutton цвет менять не надо
+        /// </summary>
+        /// <param name="sender"> Объект, в котором необходимо изменить</param>
+        /// <param name="color"> Цвет который необходимо поставить Contor'у</param>
+        public void SetCurrentForecolor (object sender, SolidColorBrush color)
+        {
+            Control obj = sender as Control;
+            var rb = obj as RadioButton;
+            if (rb != null)
+            {
+                if (!(bool)rb.IsChecked)
+                    rb.SetCurrentValue(ForegroundProperty, color);
+            }
+            else
+                obj.SetCurrentValue(ForegroundProperty, color);
+        }
+        private void Universal_MouseEnter(object sender, MouseEventArgs e)
+        {
+            SetCurrentForecolor(sender, new SolidColorBrush(Color.FromRgb(120, 120, 120)));
+        }
+
+        private void Universal_MouseLeave(object sender, MouseEventArgs e)
+        {
+            SetCurrentForecolor(sender, new SolidColorBrush(Color.FromRgb(219, 220, 230)));
+            
         }
     }
 }

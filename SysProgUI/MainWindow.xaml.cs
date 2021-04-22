@@ -22,18 +22,41 @@ namespace SysProgUI
     /// </summary>
     public partial class MainWindow : Window
     {
-        private byte mode = 0;
-        private TabItem[] tabArray;
+        TabItem[] tabArray;
         public MainWindow()
         {
             InitializeComponent();
+
+            //Button btn = new Button();
+            //btn.FontWeight = FontWeights.Bold;
+
+            //WrapPanel pnl = new WrapPanel();
+
+            //TextBlock txt = new TextBlock();
+            //txt.Text = "Multi";
+            //txt.Foreground = Brushes.Blue;
+            //pnl.Children.Add(txt);
+
+            //txt = new TextBlock();
+            //txt.Text = "Color";
+            //txt.Foreground = Brushes.Red;
+            //pnl.Children.Add(txt);
+
+            //txt = new TextBlock();
+            //txt.Text = "Button";
+            //pnl.Children.Add(txt);
+
+            //btn.Content = pnl;
+            //btn.Margin = new Thickness(200, 200, 0, 0);
+            //btn.Background = Brushes.Magenta;
+            //canvas.Children.Add(btn);
+            //var fileDialog = new OpenFileDialog();
+            //int length = this.MainTabControl.Items.Count;
             var itemTabs = this.MainTabControl.Items;
             List<TabItem> tabList = new List<TabItem>();
             foreach (object item in itemTabs)
                 tabList.Add((TabItem)item);
             tabArray = tabList.ToArray();
-            mode = 0;
-
         }
         private void Canvas_MouseUp(object sender, MouseButtonEventArgs e)
         {
@@ -63,10 +86,9 @@ namespace SysProgUI
         {
             RadioButton rb = sender as RadioButton;
             rb.SetCurrentValue(ForegroundProperty, new SolidColorBrush(Color.FromRgb(120, 120, 120)));
-            if (tabArray!=null)
-             foreach (TabItem item in tabArray)
-                    if (item.Header.Equals(rb.Content))
-                          this.MainTabControl.SelectedItem = item;
+            foreach (TabItem item in tabArray)
+                if (item.Header.Equals(rb.Content))
+                        this.MainTabControl.SelectedItem = item;
       
         }
 
@@ -103,20 +125,6 @@ namespace SysProgUI
         {
             SetCurrentForecolor(sender, new SolidColorBrush(Color.FromRgb(219, 220, 230)));
             
-        }
-
-        private void Button_Click_2(object sender, RoutedEventArgs e)
-        {
-            infoLabel.Content = Logic.SyntacticConstructions.getResult(languageConstructTB.Text, mode);
-        }
-
-        private void RadioButton_Checked_1(object sender, RoutedEventArgs e)
-        {
-            RadioButton rb = sender as RadioButton;
-            if (rb.Name.Equals("Foreach"))
-                mode = 0;
-            else
-                mode = 1;
         }
     }
 }

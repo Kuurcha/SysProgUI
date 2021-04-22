@@ -45,7 +45,6 @@
             <Setter Property="VerticalAlignment" Value="Top"/>
             <Setter Property="VerticalContentAlignment" Value="Center"/>
             <Setter Property="Foreground" Value="#DBDCE6"/>
-            <EventSetter Event="Checked" Handler="RadioButton_Checked_1"/>
         </Style>
         <Style x:Key="FlatButton"    
                BasedOn="{StaticResource {x:Type Button}}"
@@ -102,7 +101,7 @@
             <Button Style="{StaticResource {x:Static ToolBar.ButtonStyleKey}}" Background ="#4864B3" Foreground ="#DEDEDE" FontSize = "16"  HorizontalAlignment="Right"  Width="45"  Click="Button_Click_1">-</Button>
             <Button Grid.Column="1" Style="{StaticResource {x:Static ToolBar.ButtonStyleKey}}" Background ="#4864B3" Foreground ="#DEDEDE" FontSize = "16" HorizontalAlignment="Right"  Width="45" Click="Button_Click">X</Button>
             <DockPanel Grid.Column="0" Grid.Row="0" VerticalAlignment="Center"   Margin="0,0,0,0" x:Name="mainPanel" HorizontalAlignment="Left">
-                <RadioButton  BorderBrush="#48517F" BorderThickness="1" Style="{StaticResource ChangedColorRadiobutton}" Content=" СУБД "                    GroupName="View" IsChecked="True"/>
+                <RadioButton  BorderBrush="#48517F" BorderThickness="1" Style="{StaticResource ChangedColorRadiobutton}" Content=" СУБД "                    GroupName="View" />
                 <RadioButton  BorderBrush="#48517F" BorderThickness="1" Style="{StaticResource ChangedColorRadiobutton}" Content=" Конструкция языка "        GroupName="View" />
                 <RadioButton  BorderBrush="#48517F" BorderThickness="1" Style="{StaticResource ChangedColorRadiobutton}" Content=" Ассемблерные вставки "     GroupName="View" />
                 <RadioButton  BorderBrush="#48517F" BorderThickness="1" Style="{StaticResource ChangedColorRadiobutton}" Content=" Log "                     GroupName="View" />
@@ -124,11 +123,11 @@
                             <RowDefinition Height="Auto"></RowDefinition>
                             <RowDefinition Height="Auto"></RowDefinition>
                         </Grid.RowDefinitions>
-                        <RadioButton Style="{StaticResource RadioButtonText}" IsChecked="True" Content ="Foreach" GroupName="Temp" />
-                        <RadioButton Style="{StaticResource RadioButtonText}" Grid.Row ="1" Content="If/Else" GroupName="Temp" />
-                        <TextBox Name ="languageConstructTB" Grid.Row="2" Foreground="#DBDCE6" FontSize="14" Grid.ColumnSpan="2" Background="Transparent" BorderThickness="3" Height="410" VerticalAlignment="Stretch"> </TextBox>
-                        <Button Grid.Row="3" Content = "  Получить  " Style="{StaticResource FlatButton}" Click="Button_Click_2"> </Button>
-                        <Label  Name ="infoLabel" Grid.Row ="3" Grid.Column ="1" HorizontalAlignment="Left" VerticalAlignment="Top" Content="Тут могла быть ваша реклама" FontSize="14" Foreground="#DBDCE6"></Label>
+                        <RadioButton Style="{StaticResource RadioButtonText}" Content="If/Else" GroupName="Temp" IsChecked="True"/>
+                        <RadioButton Style="{StaticResource RadioButtonText}" Grid.Row ="1" Content ="Foreach" GroupName="Temp"/>
+                        <TextBox Grid.Row="2" Foreground="#DBDCE6" FontSize="14" Grid.ColumnSpan="2" Background="Transparent" BorderThickness="3" Height="410" VerticalAlignment="Stretch"> </TextBox>
+                        <Button Grid.Row="3" Content = "  Получить  " Style="{StaticResource FlatButton}"> </Button>
+                        <Label Grid.Row ="3" Grid.Column ="1" HorizontalAlignment="Left" VerticalAlignment="Top" Content="Тут могла быть ваша реклама" FontSize="14" Foreground="#DBDCE6"></Label>
                     </Grid>
               
                 </TabItem>

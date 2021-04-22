@@ -13,7 +13,7 @@ using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
 using Microsoft.Win32;
-using Logic; 
+using Logic;
 
 namespace SysProgUI
 {
@@ -22,41 +22,18 @@ namespace SysProgUI
     /// </summary>
     public partial class MainWindow : Window
     {
-        TabItem[] tabArray;
+        private byte mode = 0;
+        private TabItem[] tabArray;
         public MainWindow()
         {
             InitializeComponent();
-
-            //Button btn = new Button();
-            //btn.FontWeight = FontWeights.Bold;
-
-            //WrapPanel pnl = new WrapPanel();
-
-            //TextBlock txt = new TextBlock();
-            //txt.Text = "Multi";
-            //txt.Foreground = Brushes.Blue;
-            //pnl.Children.Add(txt);
-
-            //txt = new TextBlock();
-            //txt.Text = "Color";
-            //txt.Foreground = Brushes.Red;
-            //pnl.Children.Add(txt);
-
-            //txt = new TextBlock();
-            //txt.Text = "Button";
-            //pnl.Children.Add(txt);
-
-            //btn.Content = pnl;
-            //btn.Margin = new Thickness(200, 200, 0, 0);
-            //btn.Background = Brushes.Magenta;
-            //canvas.Children.Add(btn);
-            //var fileDialog = new OpenFileDialog();
-            //int length = this.MainTabControl.Items.Count;
             var itemTabs = this.MainTabControl.Items;
             List<TabItem> tabList = new List<TabItem>();
             foreach (object item in itemTabs)
                 tabList.Add((TabItem)item);
             tabArray = tabList.ToArray();
+            mode = 0;
+
         }
         private void Canvas_MouseUp(object sender, MouseButtonEventArgs e)
         {
@@ -86,10 +63,11 @@ namespace SysProgUI
         {
             RadioButton rb = sender as RadioButton;
             rb.SetCurrentValue(ForegroundProperty, new SolidColorBrush(Color.FromRgb(120, 120, 120)));
-            foreach (TabItem item in tabArray)
-                if (item.Header.Equals(rb.Content))
+            if (tabArray != null)
+                foreach (TabItem item in tabArray)
+                    if (item.Header.Equals(rb.Content))
                         this.MainTabControl.SelectedItem = item;
-      
+
         }
 
         private void RadioButton_Unchecked(object sender, RoutedEventArgs e)
@@ -104,7 +82,7 @@ namespace SysProgUI
         /// </summary>
         /// <param name="sender"> Объект, в котором необходимо изменить</param>
         /// <param name="color"> Цвет который необходимо поставить Contor'у</param>
-        public void SetCurrentForecolor (object sender, SolidColorBrush color)
+        public void SetCurrentForecolor(object sender, SolidColorBrush color)
         {
             Control obj = sender as Control;
             var rb = obj as RadioButton;
@@ -124,7 +102,30 @@ namespace SysProgUI
         private void Universal_MouseLeave(object sender, MouseEventArgs e)
         {
             SetCurrentForecolor(sender, new SolidColorBrush(Color.FromRgb(219, 220, 230)));
-            
+
+        }
+
+        /// <summary>
+        /// Получает из логики dll получает результат обработки конструкции, либо в виде сообщения об ошибке, либо в виде количества заходов/зайденой ветви
+        /// </summary>
+        /// <param name="sender">Кнопка используемая для проверки конструкции</param>
+        private void Button_Click_2(object sender, RoutedEventArgs e)
+        {
+            string[] result = AnalysePresenter.PAnalyse(languageConstructTB.Text, mode);
+            if (bool.Parse(result[1])) infoLabel.SetCurrentValue(ForegroundProperty, new SolidColorBrush(Color.FromRgb(171, 228, 205)));
+            else infoLabel.SetCurrentValue(ForegroundProperty, new SolidColorBrush(Color.FromRgb(216, 219, 255)));
+            infoLabel.Content = result[0];
+        }
+
+        private void RadioButton_Checked_1(object sender, RoutedEventArgs e)
+        {
+            RadioButton rb = sender as RadioButton;
+            if (rb.Name.Equals("Foreach"))
+                mode = 0;
+
+
+            else
+                mode = 1;
         }
     }
 }

@@ -15,17 +15,6 @@
         <System:Double x:Key="WindowHeight1">600</System:Double>
         <System:Double x:Key="WindowWidth1">600</System:Double>
         <Style 
-            BasedOn="{StaticResource {x:Type TextBox}}"
-            TargetType="{x:Type TextBox}"
-            x:Key="ChangedColorTextbox">
-            <Setter Property="BorderThickness" Value="1" />
-            <Setter Property="Background" Value="#686C94"/>
-            <Setter Property="Foreground" Value="#DBDCE6"/>
-            <Setter Property="FontSize" Value="16"/>
-            <Setter Property="Width" Value="Auto"/>
-            <Setter Property="Height" Value="30"/>
-        </Style>
-        <Style 
             BasedOn="{StaticResource {x:Type ToggleButton}}"
             TargetType="{x:Type RadioButton}"
             x:Key="ChangedColorRadiobutton">
@@ -37,6 +26,8 @@
             <Setter Property="Width" Value="Auto"/>
             <Setter Property="Height" Value="Auto"/>
             <Setter Property="Padding" Value="0,0,0,0"/>
+            <EventSetter Event="Checked" Handler="RadioButton_Checked"/>
+            <EventSetter Event="Unchecked" Handler="RadioButton_Unchecked"/>
             <EventSetter Event="MouseEnter" Handler="Universal_MouseEnter"/>
             <EventSetter Event="MouseLeave" Handler="Universal_MouseLeave"/>
         </Style>
@@ -112,10 +103,10 @@
             <Button Style="{StaticResource {x:Static ToolBar.ButtonStyleKey}}" Background ="#4864B3" Foreground ="#DEDEDE" FontSize = "16"  HorizontalAlignment="Right"  Width="45"  Click="Button_Click_1">-</Button>
             <Button Grid.Column="1" Style="{StaticResource {x:Static ToolBar.ButtonStyleKey}}" Background ="#4864B3" Foreground ="#DEDEDE" FontSize = "16" HorizontalAlignment="Right"  Width="45" Click="Button_Click">X</Button>
             <DockPanel Grid.Column="0" Grid.Row="0" VerticalAlignment="Center"   Margin="0,0,0,0" x:Name="mainPanel" HorizontalAlignment="Left">
-                <RadioButton  BorderBrush="#48517F" Style="{StaticResource ChangedColorRadiobutton}" Content=" СУБД "                    GroupName="View" IsChecked="True" Checked="RadioButton_Checked" Unchecked="RadioButton_Unchecked" />
-                <RadioButton  BorderBrush="#48517F"  Style="{StaticResource ChangedColorRadiobutton}" Content=" Конструкция языка "        GroupName="View" Checked="RadioButton_Checked" Unchecked="RadioButton_Unchecked"  />
-                <RadioButton  BorderBrush="#48517F"  Style="{StaticResource ChangedColorRadiobutton}" Content=" Ассемблерные вставки "     GroupName="View" Checked="RadioButton_Checked" Unchecked="RadioButton_Unchecked" />
-                <RadioButton  BorderBrush="#48517F"  Style="{StaticResource ChangedColorRadiobutton}" Content=" Log "                     GroupName="View" Checked="RadioButton_Checked" Unchecked="RadioButton_Unchecked" />
+                <RadioButton  BorderBrush="#48517F" Style="{StaticResource ChangedColorRadiobutton}" Content=" СУБД "                    GroupName="View" IsChecked="True"/>
+                <RadioButton  BorderBrush="#48517F"  Style="{StaticResource ChangedColorRadiobutton}" Content=" Конструкция языка "        GroupName="View" />
+                <RadioButton  BorderBrush="#48517F"  Style="{StaticResource ChangedColorRadiobutton}" Content=" Ассемблерные вставки "     GroupName="View" />
+                <RadioButton  BorderBrush="#48517F"  Style="{StaticResource ChangedColorRadiobutton}" Content=" Log "                     GroupName="View" />
             </DockPanel>
             <TabControl Grid.Column="0" Background="Transparent" Foreground="Transparent" Margin="10,16,10,-543" Grid.ColumnSpan="2" Name = "MainTabControl" RenderTransformOrigin="0.509,0.52">
                 <TabItem Style= "{StaticResource HiddenTabs}" Header=" СУБД ">
@@ -134,7 +125,7 @@
                             <RowDefinition Height="Auto"></RowDefinition>
                             <RowDefinition Height="Auto"></RowDefinition>
                         </Grid.RowDefinitions>
-                        <RadioButton Style="{StaticResource RadioButtonText}" IsChecked="True" Content ="Foreach" GroupName="Temp"/>
+                        <RadioButton Style="{StaticResource RadioButtonText}" IsChecked="True" Content ="Foreach" GroupName="Temp" />
                         <RadioButton Style="{StaticResource RadioButtonText}" Grid.Row ="1" Content="If/Else" GroupName="Temp" />
                         <TextBox Name ="languageConstructTB" Grid.Row="2" Foreground="#DBDCE6" FontSize="14" Grid.ColumnSpan="2" Background="Transparent" BorderThickness="3" Height="460" VerticalAlignment="Stretch"></TextBox>
                         <Button FontSize ="16" Grid.Row="3"  Content = "Получить" Style="{StaticResource FlatButton}" Click="Button_Click_2"></Button>
@@ -143,31 +134,7 @@
 
                 </TabItem>
                 <TabItem Style ="{StaticResource HiddenTabs}" Header=" Ассемблерные вставки ">
-                    <Grid VerticalAlignment="Center" >
-                        <Grid.ColumnDefinitions>
-                            <ColumnDefinition Width="215" />
-                            <ColumnDefinition Width="auto" />
-                            <ColumnDefinition Width="auto" />
-                            <ColumnDefinition Width="auto" />
-                            <ColumnDefinition Width="auto" />
-                            <ColumnDefinition Width="auto" />
-                        </Grid.ColumnDefinitions>
-                        <Grid.RowDefinitions>
-
-                            <RowDefinition Height="*"></RowDefinition>
-                            <RowDefinition Height="Auto"></RowDefinition>
-                            <RowDefinition Height="Auto"></RowDefinition>
-                            <RowDefinition Height="Auto"></RowDefinition>
-                        </Grid.RowDefinitions>
-                        <RadioButton Style="{StaticResource RadioButtonText}" Name ="mulRb"  IsChecked="True" Content ="Умножение" GroupName="Asm"  Checked="RadioButton_Checked_Asm" Unchecked="RadioButton_Unchecked_Asm"/>
-                        <RadioButton Style="{StaticResource RadioButtonText}" Content= "Деление" GroupName="Asm" Margin="0,20,0,0" Checked="RadioButton_Checked_Asm" Unchecked="RadioButton_Unchecked_Asm"/>
-                        <TextBox Style ="{StaticResource ChangedColorTextbox}" Name ="FirstOperatorTB"  Grid.Column ="0" Text="" MaxLength="6" TextWrapping="NoWrap" HorizontalAlignment="Center" FontSize ="33" Width="120" Height="60" Margin="30,0,0,0"/>
-                        <Label  Name ="OpLbl" FontSize ="63" Grid.Column="1" Content="X" Margin="-30,-10,0,0" VerticalAlignment="Center" HorizontalAlignment="Center"/>
-                        <TextBox Style ="{StaticResource ChangedColorTextbox}" Name ="SecondOperatorTB" Grid.Column="2" Text="" MaxLength="6" TextWrapping="NoWrap" HorizontalAlignment="Center" FontSize ="33" Width="120" Height="60" Margin="0,0,0,0"/>
-                        <Label FontSize ="63" Grid.Column="3" Content="=" Margin="0,-10,0,0" VerticalAlignment="Center"/>
-                        <TextBox Style ="{StaticResource ChangedColorTextbox}" Name ="ResultTBr" Grid.Column="4" Text="" MaxLength="6" TextWrapping="NoWrap" HorizontalAlignment="Center" FontSize ="33" Width="120" Height="60" Margin="-30,0,0,0"/>
-                        <Button Style="{StaticResource FlatButton}" Grid.Column="4" Grid.Row="0" HorizontalAlignment="Center" VerticalAlignment="Bottom" Margin="20,450,0,0" Width="120" Height="60" FontSize ="24" Content="Посчитать" Click="Button_Click_Calc" />
-                    </Grid>
+                    <Label Content="3"/>
                 </TabItem>
                 <TabItem Style ="{StaticResource HiddenTabs}" Header=" Log ">
                     <Label Content="4"/>

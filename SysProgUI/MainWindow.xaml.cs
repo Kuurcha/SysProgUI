@@ -13,29 +13,17 @@ using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
 using Microsoft.Win32;
-
 using Logic;
-using Logic.Model;
-using SysProgUI.Presenter;
-using SysProgUI.IView;
+
 namespace SysProgUI
 {
     /// <summary>
     /// Interaction logic for MainWindow.xaml
     /// </summary>
-    public partial class MainWindow : Window, IViewAsm
+    public partial class MainWindow : Window
     {
-     
+        private byte mode = 0;
         private TabItem[] tabArray;
-
-        byte mode = 0;
-        public string asmResult { set { ResultTBr.Text = value; } }
-        public string aValue { get { return FirstOperatorTB.Text; } }
-        public string bValue { get { return SecondOperatorTB.Text; } }
-        public bool AsmMode { get { return (bool) mulRb.IsChecked; } }
-
-        public event Action AsmResultRequest;
-       
         public MainWindow()
         {
             InitializeComponent();
@@ -45,12 +33,8 @@ namespace SysProgUI
                 tabList.Add((TabItem)item);
             tabArray = tabList.ToArray();
             mode = 0;
-            AsmPresenter pr = new AsmPresenter(this, new AsmModel());
-            
+
         }
-
-       
-
         private void Canvas_MouseUp(object sender, MouseButtonEventArgs e)
         {
             MessageBox.Show("You clicked me at " + e.GetPosition(this).ToString());
@@ -59,11 +43,6 @@ namespace SysProgUI
         private void Button_Click(object sender, RoutedEventArgs e)
         {
             Close();
-        }
-
-        private void Button_Click_Calc(object sender, RoutedEventArgs e)
-        {
-            AsmResultRequest?.Invoke();        
         }
 
         private void Button_Click_1(object sender, RoutedEventArgs e)
@@ -95,27 +74,6 @@ namespace SysProgUI
         {
             RadioButton rb = sender as RadioButton;
             rb.SetCurrentValue(ForegroundProperty, new SolidColorBrush(Color.FromRgb(219, 220, 230)));
-
-        }
-
-        public void setOperation (RadioButton rb)
-        {
-            if (rb.Content != null) 
-                if (rb.Content.Equals("Умножение")) OpLbl.Content = "X";
-                else OpLbl.Content = "\\";
-        } 
-        private void RadioButton_Checked_Asm(object sender, RoutedEventArgs e)
-        {
-            RadioButton rb = sender as RadioButton;
-            setOperation(rb);
-
-
-        }
-
-        private void RadioButton_Unchecked_Asm(object sender, RoutedEventArgs e)
-        {
-            RadioButton rb = sender as RadioButton;
-            setOperation(rb);
 
         }
 
@@ -153,11 +111,10 @@ namespace SysProgUI
         /// <param name="sender">Кнопка используемая для проверки конструкции</param>
         private void Button_Click_2(object sender, RoutedEventArgs e)
         {
-            //string[] result = AnalysePresenter.PAnalyse(languageConstructTB.Text, mode);
-            //if (bool.Parse(result[1])) infoLabel.SetCurrentValue(ForegroundProperty, new SolidColorBrush(Color.FromRgb(171, 228, 205)));
-            //else infoLabel.SetCurrentValue(ForegroundProperty, new SolidColorBrush(Color.FromRgb(216, 219, 255)));
-            //infoLabel.Content = result[0];
-            
+            string[] result = AnalysePresenter.PAnalyse(languageConstructTB.Text, mode);
+            if (bool.Parse(result[1])) infoLabel.SetCurrentValue(ForegroundProperty, new SolidColorBrush(Color.FromRgb(171, 228, 205)));
+            else infoLabel.SetCurrentValue(ForegroundProperty, new SolidColorBrush(Color.FromRgb(216, 219, 255)));
+            infoLabel.Content = result[0];
         }
 
         private void RadioButton_Checked_1(object sender, RoutedEventArgs e)
@@ -170,12 +127,5 @@ namespace SysProgUI
             else
                 mode = 1;
         }
-
-        public void ShowMessageBoxAsm(string message)
-        {
-            MessageBox.Show(message, "Ошибка", MessageBoxButton.OK, MessageBoxImage.Error);
-        }
-
-    
     }
 }

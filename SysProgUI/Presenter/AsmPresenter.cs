@@ -23,6 +23,7 @@ namespace SysProgUI.Presenter
                 viewAsm.asmResult = tempResult[0];
             else
                 viewAsm.ShowMessageBoxAsm(tempResult[1]);
+            
         }
     }
 }

@@ -1,29 +1,34 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Text;
+using Logic.Model;
+using SysProgUI.IView;
+using System.Media;
+using System.Windows.Media;
 
 namespace SysProgUI.Presenter
 {
     public class AnalysePresenter
     {
-        //public static string[] PAnalyse(string processInfo, byte mode)
-        //{
-        //    //string stringResult = Logic.SyntacticConstructions.getResult(processInfo, mode);
-        //    //string[] result = new string[2];
-        //    //result[0] = stringResult; 
-        //    //int intResult = default(int);
-        //    //if (int.TryParse(stringResult, out intResult))
-        //    //{
+        private IAnalyseModel analyseModel;
+        private IViewAnalyse viewAnalyse;
 
-        //    //    if (mode == 0)
-        //    //        result[0] = "Foreach выполнился: " + intResult + " Раз";
-        //    //    else
-        //    //        result[0] = "Вошел в ветвь  № " + intResult;
-        //    //    result[1] = (true).ToString();
-        //    //}
-        //    //else
-        //    //    result[1] = (false).ToString();
-        //    //return result;
-        //}
+
+        public AnalysePresenter(IViewAnalyse viewAnalyse, IAnalyseModel analyseModel) {
+            this.analyseModel = analyseModel;
+            this.viewAnalyse = viewAnalyse;
+            viewAnalyse.AnalyseResultRequest += OnResultRequest;
+        }
+
+        public void OnResultRequest()
+        {
+              string result =  analyseModel.getResult(viewAnalyse.toAnalyseTB, !viewAnalyse.analyseMode);
+
+            if (result.Contains("Ошибка!"))
+                viewAnalyse.SetColorAnalyse(viewAnalyse.currentLbl, new SolidColorBrush(Color.FromRgb(255, 0, 0)));
+            else
+                viewAnalyse.SetColorAnalyse(viewAnalyse.currentLbl, new SolidColorBrush(Color.FromRgb(0, 255, 0)));
+            viewAnalyse.analyseLblOutput = result;
+        }
     }
 }

@@ -1,0 +1,102 @@
+﻿<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+                    x:Class="SysProgUI.WPF.Resource.Dictionary"
+                    xmlns:local ="clr-namespace:SysProgUI">
+    <Style 
+            BasedOn="{StaticResource {x:Type TextBox}}"
+            TargetType="{x:Type TextBox}"
+            x:Key="ChangedColorTextbox">
+            <Setter Property="BorderThickness" Value="1" />
+            <Setter Property="Background" Value="#686C94"/>
+            <Setter Property="Foreground" Value="#DBDCE6"/>
+            <Setter Property="FontSize" Value="16"/>
+            <Setter Property="Width" Value="Auto"/>
+            <Setter Property="Height" Value="30"/>
+        </Style>
+        <Style 
+            BasedOn="{StaticResource {x:Type ToggleButton}}"
+            TargetType="{x:Type RadioButton}"
+            x:Key="ChangedColorRadiobutton">
+            <Setter Property="BorderThickness" Value="1" />
+            <Setter Property="Background" Value="#4864B3"/>
+            <Setter Property="Foreground" Value="#DBDCE6"/>
+            <Setter Property="FontSize" Value="16"/>
+            <Setter Property="HorizontalAlignment" Value="Stretch"/>
+            <Setter Property="Width" Value="Auto"/>
+            <Setter Property="Height" Value="Auto"/>
+            <Setter Property="Padding" Value="0,0,0,0"/>
+            <EventSetter Event="MouseEnter" Handler="Universal_MouseEnter"/>
+            <EventSetter Event="MouseLeave" Handler="Universal_MouseLeave"/>
+        </Style>
+        <Style 
+            BasedOn="{StaticResource {x:Type TabItem}}"
+            TargetType="{x:Type TabItem}"
+            x:Key="HiddenTabs">
+            <Setter Property="Visibility" Value="Hidden"/>
+            <Setter Property="Grid.Background" Value="Transparent"/>
+        </Style>
+        <Style 
+            BasedOn="{StaticResource {x:Type RadioButton}}"
+            TargetType="{x:Type RadioButton}"
+            x:Key="RadioButtonText">
+            <Setter Property="FontSize" Value="16"/>
+            <Setter Property="VerticalAlignment" Value="Top"/>
+            <Setter Property="VerticalContentAlignment" Value="Center"/>
+            <Setter Property="Foreground" Value="#DBDCE6"/>
+    </Style>
+        <Style x:Key="FlatButton"    
+               BasedOn="{StaticResource {x:Type Button}}"
+               TargetType="{x:Type Button}">
+
+            <Setter Property="Control.Background" Value="#4864B3" />
+            <Setter Property="Foreground" Value="#DBDCE6"/>
+            <Setter Property="Width" Value="Auto"/>
+            <Setter Property="HorizontalAlignment" Value="Left"/>
+            <Setter Property="FontSize" Value="14"/>
+            <EventSetter Event="MouseEnter" Handler="Universal_MouseEnter"/>
+            <EventSetter Event="MouseLeave" Handler="Universal_MouseLeave"/>
+            <!-- #787878 -->
+
+            <Style.Triggers>
+                <Trigger Property="Control.IsMouseOver" Value="True">
+                    <Setter Property="Control.Foreground" Value="#787878" />
+                </Trigger>
+                <Trigger Property="Control.IsMouseOver" Value="False">
+                    <Setter Property="Control.Foreground" Value="#DBDCE6"/>
+                </Trigger>
+                <Trigger Property="Control.IsFocused" Value="True">
+                    <Setter Property="Control.Foreground" Value="#787878" />
+                </Trigger>
+                <Trigger Property="Control.IsFocused" Value="False">
+                    <Setter Property="Control.Foreground" Value="#DBDCE6"  />
+                </Trigger>
+            </Style.Triggers>
+        </Style>
+    <Style x:Key="KurchaWindows" TargetType="{x:Type Window}">
+        <Setter Property="WindowStyle" Value="None"/>
+        <Setter Property="ResizeMode" Value="NoResize"/>
+        <Setter Property="Background" Value="Transparent"/>
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="{x:Type Window}">
+                    <Border BorderBrush="#A1AAD2" BorderThickness="2" CornerRadius="6" MouseDown="Border_MouseDown">
+                        <Border.Background>
+                            <LinearGradientBrush EndPoint="0.5,1" StartPoint="0.5,0">
+                                <GradientStop Color="#949BC0" Offset="0.9"/>
+                                <GradientStop Color="#686C94" Offset="0.5"/>
+                                <GradientStop Color="#949BC0" />
+                            </LinearGradientBrush>
+                        </Border.Background>
+                        <Grid VerticalAlignment="Top">
+
+                            <Button Style="{StaticResource {x:Static ToolBar.ButtonStyleKey}}" Margin="0,0,45,0" Background ="#4864B3" Foreground ="#DEDEDE" FontSize = "16"   VerticalAlignment="Top" HorizontalAlignment="Right"  Width="45"  Click="Button_Click_1">-</Button>
+                            <Button Style="{StaticResource {x:Static ToolBar.ButtonStyleKey}}" Background ="#4864B3" Foreground ="#DEDEDE" FontSize = "16" VerticalAlignment="Top" HorizontalAlignment="Right"  Width="45" Click="Button_Click">X</Button>
+
+                            <ContentPresenter/>
+                        </Grid>
+                    </Border>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+    </Style>
+</ResourceDictionary>

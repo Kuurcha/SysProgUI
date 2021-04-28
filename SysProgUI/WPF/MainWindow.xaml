@@ -1,0 +1,145 @@
+﻿<Window x:Name="window" x:Class="SysProgUI.MainWindow" 
+        Style ="{StaticResource KurchaWindows}"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:SysProgUI"
+        WindowStartupLocation ="CenterScreen"
+        mc:Ignorable="d"
+        Title="MainWindow" Height="{DynamicResource WindowHeight1}" Width="{DynamicResource WindowWidth1}" 
+    xmlns:System="clr-namespace:System;assembly=System.Runtime" 
+    >
+    <Window.Resources>
+        <System:Double x:Key="WindowHeight1">600</System:Double>
+        <System:Double x:Key="WindowWidth1">550</System:Double>
+       
+    </Window.Resources>
+    <Grid>
+        <DockPanel Grid.Column="0" Grid.Row="0" VerticalAlignment="Center"   Margin="0,0,0,0" x:Name="mainPanel" HorizontalAlignment="Left">
+            <RadioButton  BorderBrush="#48517F" Style="{StaticResource ChangedColorRadiobutton}" Content=" СУБД "                    GroupName="View" IsChecked="True" Checked="RadioButton_Checked" Unchecked="RadioButton_Unchecked" />
+            <RadioButton  BorderBrush="#48517F"  Style="{StaticResource ChangedColorRadiobutton}" Content=" Конструкция языка "        GroupName="View" Checked="RadioButton_Checked" Unchecked="RadioButton_Unchecked"  />
+            <RadioButton  BorderBrush="#48517F"  Style="{StaticResource ChangedColorRadiobutton}" Content=" Ассемблерные вставки "     GroupName="View" Checked="RadioButton_Checked" Unchecked="RadioButton_Unchecked" />
+            <RadioButton  BorderBrush="#48517F"  Style="{StaticResource ChangedColorRadiobutton}" Content=" Log "                     GroupName="View" Checked="RadioButton_Checked" Unchecked="RadioButton_Unchecked" />
+        </DockPanel>
+        <TabControl Grid.Column="0" Background="Transparent" Foreground="Transparent" Margin="10,16,10,-543" Grid.ColumnSpan="2" Name = "MainTabControl" RenderTransformOrigin="0.509,0.52">
+            <TabItem Style= "{StaticResource HiddenTabs}" Header=" СУБД ">
+                <Grid>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width ="3*"/>
+                        <ColumnDefinition Width ="3*"/>
+                        <ColumnDefinition Width ="Auto"/>
+
+                    </Grid.ColumnDefinitions>
+
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="auto"/>
+                        <RowDefinition Height="auto"/>
+                        <RowDefinition Height="18*"/>
+                        <RowDefinition Height="*"/>
+                    </Grid.RowDefinitions>
+
+                    <RadioButton Name ="DllRb" Style="{StaticResource RadioButtonText}" IsChecked="True" Content ="Базы данных" GroupName="database"/>
+                    <RadioButton Style="{StaticResource RadioButtonText}" Grid.Row ="1" Content="Система файлов" GroupName="database" />
+                    <TabControl Grid.Row="2" Grid.Column="0" Background="Transparent" Foreground="Transparent" Margin="0,0,0,0" Grid.ColumnSpan="4" Name = "Tableswitch">
+                        <TabItem Header="Запись о доступе (.bin)">
+                            <DataGrid x:Name="databaseBin" AutoGenerateColumns="False" Margin="0,0,0,0" IsReadOnly="True" ScrollViewer.CanContentScroll="True"   ScrollViewer.VerticalScrollBarVisibility="Auto"  MaxHeight="430">
+                                <DataGrid.ColumnHeaderStyle>
+                                    <Style TargetType="{x:Type DataGridColumnHeader}">
+                                        <Setter Property="FontSize" Value="20"/>
+                                    </Style>
+                                </DataGrid.ColumnHeaderStyle>
+                                <DataGrid.Columns>
+                                    <DataGridTextColumn Header="Логин"    Binding = "{Binding Login}"  Width="1*" />
+                                    <DataGridTextColumn Header="Хэш-код"  Binding = "{Binding Hashcode}" Width="1*" />
+                                    <DataGridTextColumn Header="Пароль"   Binding ="{Binding Password}" Width="*" />
+                                    <DataGridTextColumn Header="Email"    Binding ="{Binding Email}" Width="*" />
+                                </DataGrid.Columns>
+                            </DataGrid>
+                        </TabItem>
+                        <TabItem Header="Запись о файле (.json)">
+                            <DataGrid x:Name="databaseJson" CanUserAddRows="False" AutoGenerateColumns="False" Margin="0,0,0,0" ScrollViewer.CanContentScroll="True"   ScrollViewer.VerticalScrollBarVisibility="Visible" MaxHeight="430">
+                                <DataGrid.ColumnHeaderStyle>
+                                    <Style TargetType="{x:Type DataGridColumnHeader}">
+                                        <Setter Property="FontSize" Value="20"/>
+                                    </Style>
+                                </DataGrid.ColumnHeaderStyle>
+                                <DataGrid.Columns>
+                                    <DataGridTextColumn Header="Имя Файла" Binding = "{Binding FileName}" Width="1*" />
+                                    <DataGridTextColumn Header="Версия"  Binding = "{Binding FileVersion}" Width="0.5*" />
+                                    <DataGridTextColumn Header="Дата редактирования" Binding = "{Binding DateOfLastEdit}"  Width="0.9*" />
+
+
+                                </DataGrid.Columns>
+                            </DataGrid>
+                        </TabItem>
+                    </TabControl>
+                    <Button FontSize ="16" Grid.Row="0" Grid.Column="2"  Content = "Загрузить" Width="100" Style="{StaticResource FlatButton}" Click="Button_Click_Load" HorizontalAlignment="Left"></Button>
+                    <Button FontSize ="16" Grid.Row="1" Grid.Column="2"  Content = "Сохранить" Width="100" Style="{StaticResource FlatButton}" Click="Button_Click_Save" ></Button>
+                    <Button FontSize ="16" Grid.Row="4" Grid.Column="0"  Content = "Добавить" Style="{StaticResource FlatButton}" Click="Button_Click_Add" ></Button>
+                    <Button FontSize ="16" Grid.Row="4" Grid.Column="1" Content = "Удалить" Style="{StaticResource FlatButton}" Click="Button_Click_Delete"></Button>
+                    <Button FontSize ="16" Grid.Row="4" Grid.Column ="2" Content = "Изменить" Style="{StaticResource FlatButton}" Click="Button_Click_Modify"  HorizontalAlignment="Left" Margin="30,0,0,0"></Button>
+                </Grid>
+            </TabItem>
+            <TabItem Style ="{StaticResource HiddenTabs}" Header=" Конструкция языка ">
+                <Grid VerticalAlignment="Top" >
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="*" />
+                        <ColumnDefinition Width="auto" />
+                    </Grid.ColumnDefinitions>
+                    <Grid.RowDefinitions>
+
+                        <RowDefinition Height="*"></RowDefinition>
+                        <RowDefinition Height="Auto"></RowDefinition>
+                        <RowDefinition Height="Auto"></RowDefinition>
+                        <RowDefinition Height="Auto"></RowDefinition>
+                    </Grid.RowDefinitions>
+                    <RadioButton Name ="ForeachRB" Style="{StaticResource RadioButtonText}" IsChecked="True" Content ="Foreach" GroupName="Temp"/>
+                    <RadioButton Style="{StaticResource RadioButtonText}" Grid.Row ="1" Content="If/Else" GroupName="Temp" />
+                    <TextBox Name ="languageConstructTB" Grid.Row="2" Foreground="#DBDCE6" FontSize="14" Grid.ColumnSpan="2" Background="Transparent" BorderThickness="3" Height="460" VerticalAlignment="Stretch"></TextBox>
+                    <Button FontSize ="16" Grid.Row="3"  Content = "Получить" Style="{StaticResource FlatButton}" Click="Button_Click_Analyse"></Button>
+                    <Label  Name ="infoLabel" Grid.Row ="3" Grid.Column ="1" HorizontalAlignment="Left" VerticalAlignment="Top" Content="Тут могла быть ваша реклама" FontSize="18" Foreground="#D8DBFF"></Label>
+                </Grid>
+
+            </TabItem>
+            <TabItem Style ="{StaticResource HiddenTabs}" Header=" Ассемблерные вставки ">
+                <Grid VerticalAlignment="Center" >
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="2.8*" />
+                        <ColumnDefinition Width="0.9*" />
+                        <ColumnDefinition Width="2.4*" />
+                        <ColumnDefinition Width="0.9*" />
+                        <ColumnDefinition Width="2.4*" />
+                    </Grid.ColumnDefinitions>
+                    <Grid.RowDefinitions>
+
+                        <RowDefinition Height="*"></RowDefinition>
+                        <RowDefinition Height="*"></RowDefinition>
+                        <RowDefinition Height="Auto"></RowDefinition>
+                        <RowDefinition Height="Auto"></RowDefinition>
+                    </Grid.RowDefinitions>
+                    <RadioButton Style="{StaticResource RadioButtonText}" Name ="mulRb"  IsChecked="True" Content ="Умножение" GroupName="Asm"  Checked="RadioButton_Checked_Asm" Unchecked="RadioButton_Unchecked_Asm"/>
+                    <RadioButton Style="{StaticResource RadioButtonText}" Content= "Деление" GroupName="Asm" Margin="0,20,0,0" Checked="RadioButton_Checked_Asm" Unchecked="RadioButton_Unchecked_Asm"/>
+                    <TextBox Style ="{StaticResource ChangedColorTextbox}" Name ="FirstOperatorTB"  Grid.Column ="0" Text="" MaxLength="6" TextWrapping="NoWrap" HorizontalAlignment="Center" FontSize ="33" Width="120" Height="60" Margin="30,0,0,0"/>
+                    <Label  Name ="OpLbl" FontSize ="63" Grid.Column="1" Content="X" Margin="0,-10,0,0" VerticalAlignment="Center" HorizontalAlignment="Center"/>
+                    <TextBox Style ="{StaticResource ChangedColorTextbox}" Name ="SecondOperatorTB" Grid.Column="2" Text="" MaxLength="6" TextWrapping="NoWrap" HorizontalAlignment="Center" FontSize ="33" Width="120" Height="60" Margin="0,0,0,0"/>
+                    <Label FontSize ="63" Grid.Column="3" Content="=" Margin="-10,0,0,0" VerticalAlignment="Center"/>
+                    <TextBox Style ="{StaticResource ChangedColorTextbox}" Name ="ResultTBr" Grid.Column="4" Text="" MaxLength="6" TextWrapping="NoWrap" HorizontalAlignment="Center" FontSize ="33" Width="120" Height="60" Margin="-30,0,0,0"/>
+                    <Button Style="{StaticResource FlatButton}" Grid.Column="4" Grid.Row="0" HorizontalAlignment="Center" VerticalAlignment="Bottom" Margin="20,450,0,0" Width="120" Height="60" FontSize ="24" Content="Посчитать" Click="Button_Click_Calc" />
+                </Grid>
+            </TabItem>
+            <TabItem Style ="{StaticResource HiddenTabs}" Header=" Log ">
+                <Label Content="4"/>
+            </TabItem>
+        </TabControl>
+    </Grid>
+    
+         
+
+
+
+
+
+
+
+</Window>

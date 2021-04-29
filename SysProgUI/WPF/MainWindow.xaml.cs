@@ -309,6 +309,7 @@ namespace SysProgUI
                 }
 
             }
+  
             fbpresenter = null;
 
     }

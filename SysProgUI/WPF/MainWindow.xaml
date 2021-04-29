@@ -39,11 +39,11 @@
                         <RowDefinition Height="*"/>
                     </Grid.RowDefinitions>
 
-                    <RadioButton Name ="DllRb" Style="{StaticResource RadioButtonText}" IsChecked="True" Content ="Базы данных" GroupName="database"/>
-                    <RadioButton Style="{StaticResource RadioButtonText}" Grid.Row ="1" Content="Система файлов" GroupName="database" />
+                    <RadioButton Name ="DllRb" Style="{StaticResource RadioButtonText}" IsChecked="True" Content ="Базы данных" GroupName="database" Checked="DataBase_Checked" />
+                    <RadioButton Style="{StaticResource RadioButtonText}" Grid.Row ="1" Content="Система файлов" GroupName="database" Checked="DataBase_Checked" />
                     <TabControl Grid.Row="2" Grid.Column="0" Background="Transparent" Foreground="Transparent" Margin="0,0,0,0" Grid.ColumnSpan="4" Name = "Tableswitch">
                         <TabItem Header="Запись о доступе (.bin)">
-                            <DataGrid x:Name="databaseBin" AutoGenerateColumns="False" Margin="0,0,0,0" IsReadOnly="True" ScrollViewer.CanContentScroll="True"   ScrollViewer.VerticalScrollBarVisibility="Auto"  MaxHeight="430">
+                            <DataGrid x:Name="databaseBin" CanUserAddRows ="False" IsReadOnly="false" AutoGenerateColumns="False" Margin="0,0,0,0" ScrollViewer.CanContentScroll="True"   ScrollViewer.VerticalScrollBarVisibility="Auto" ScrollViewer.HorizontalScrollBarVisibility="Auto"  MaxHeight="410">
                                 <DataGrid.ColumnHeaderStyle>
                                     <Style TargetType="{x:Type DataGridColumnHeader}">
                                         <Setter Property="FontSize" Value="20"/>
@@ -58,7 +58,7 @@
                             </DataGrid>
                         </TabItem>
                         <TabItem Header="Запись о файле (.json)">
-                            <DataGrid x:Name="databaseJson" CanUserAddRows="False" AutoGenerateColumns="False" Margin="0,0,0,0" ScrollViewer.CanContentScroll="True"   ScrollViewer.VerticalScrollBarVisibility="Visible" MaxHeight="430">
+                            <DataGrid x:Name="databaseJson" CanUserAddRows="False" IsReadOnly="false" AutoGenerateColumns="False" Margin="0,0,0,0" ScrollViewer.CanContentScroll="True"   ScrollViewer.VerticalScrollBarVisibility="Auto" ScrollViewer.HorizontalScrollBarVisibility="Auto"  MaxHeight="410">
                                 <DataGrid.ColumnHeaderStyle>
                                     <Style TargetType="{x:Type DataGridColumnHeader}">
                                         <Setter Property="FontSize" Value="20"/>
@@ -129,7 +129,7 @@
                 </Grid>
             </TabItem>
             <TabItem Style ="{StaticResource HiddenTabs}" Header=" Log ">
-                <Label Content="4"/>
+                <TextBox Name ="loggerTB" Grid.Row="2" Foreground="#DBDCE6" FontSize="14" Grid.ColumnSpan="2" Background="Transparent" BorderThickness="3"  VerticalAlignment="Stretch" ScrollViewer.VerticalScrollBarVisibility="Auto" ScrollViewer.HorizontalScrollBarVisibility="Auto"></TextBox>
             </TabItem>
         </TabControl>
     </Grid>

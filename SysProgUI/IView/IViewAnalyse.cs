@@ -5,7 +5,7 @@ using System.Windows.Controls;
 using System.Windows.Media;
 namespace SysProgUI.IView
 {
-    public interface IViewAnalyse
+    public interface IViewAnalyse: MyIView
     {
         string analyseLblOutput { set; }
 

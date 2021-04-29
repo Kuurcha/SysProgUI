@@ -20,9 +20,16 @@ namespace SysProgUI.Presenter
         {
             string[] tempResult = asmModel.DoOperation(viewAsm.aValue, viewAsm.bValue, viewAsm.AsmMode);
             if (tempResult[1] == null)
+            {
                 viewAsm.asmResult = tempResult[0];
+                viewAsm.LogToTextbox(Logic.LogManager.type.INFO, "Успешно, результат операции: " + tempResult[0]);
+            }
             else
+            {
                 viewAsm.ShowMessageBoxAsm(tempResult[1]);
+                viewAsm.LogToTextbox(Logic.LogManager.type.ERROR, tempResult[1]);
+            }
+               
             
         }
     }

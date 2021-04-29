@@ -12,6 +12,7 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
+using System.Windows.Forms;
 using System.IO;
 using Microsoft.Win32;
 using System.Collections.ObjectModel;
@@ -20,6 +21,13 @@ using Logic.Model;
 using SysProgUI.Presenter;
 using SysProgUI.IView;
 using Newtonsoft.Json;
+using RadioButton = System.Windows.Controls.RadioButton;
+using Control = System.Windows.Controls.Control;
+using Label = System.Windows.Controls.Label;
+using SaveFileDialog = Microsoft.Win32.SaveFileDialog;
+using Button = System.Windows.Controls.Button;
+using MessageBox = System.Windows.MessageBox;
+
 namespace SysProgUI
 {
     /// <summary>
@@ -64,7 +72,7 @@ namespace SysProgUI
 
         public void ShowMessageBoxAsm(string message)
         {
-            MessageBox.Show(message, "Ошибка", MessageBoxButton.OK, MessageBoxImage.Error);
+            System.Windows.MessageBox.Show(message, "Ошибка", MessageBoxButton.OK, MessageBoxImage.Error);
         }
 
         bool mode = false;
@@ -104,6 +112,10 @@ namespace SysProgUI
         }
         public ObservableCollection<AccessInfo> accessInfosList_DB { set; get; }
         public ObservableCollection<DllFileInfo> dllFileInfoList_DB { set; get; }
+
+        private ObservableCollection<AccessInfo> backupCollectionAccessInfo;
+        private ObservableCollection<DllFileInfo> backupCollectionDllFileInfo;
+           
         public string pathForDB { get; set; }
         private bool checkState()
         {
@@ -122,6 +134,17 @@ namespace SysProgUI
         }
 
         private FileBasePresenter fbpresenter;
+        private DataBaseMainModel DBmodel;
+        private DataBaseFromFile  DBfromfileModel;
+
+        LogManager logManager;
+
+        
+        public void LogToTextbox(LogManager.type type, string logmessage)
+        {
+            logManager.log(type, logmessage);
+            loggerTB.Text = logManager.getLog();
+        }
         public MainWindow()
         {
             InitializeComponent();
@@ -138,15 +161,17 @@ namespace SysProgUI
              accessInfosList_DB = new ObservableCollection<AccessInfo>();
             databaseBin.ItemsSource = accessInfosList_DB;
             databaseJson.ItemsSource = dllFileInfoList_DB;
-
+            logManager = new LogManager();
 
             //DataBaseObject temp = new AccessInfo("Kurcha", "Let's pretend this is a hashcode", "password", "yhy@mail.ru");
             DataBaseObject temp = new DllFileInfo("Kurcha", "3.0", DateTime.Now) ;
-            using (StreamWriter outputFile = new StreamWriter("D:\\Programming\\testDll.json"))
-            {
-                string result = JsonConvert.SerializeObject(temp);
-                outputFile.WriteLine(result);
-            }
+
+            //using (StreamWriter outputFile = new StreamWriter("D:\\Programming\\testDll.json"))
+            //{
+            //    string result = JsonConvert.SerializeObject(temp);
+            //    outputFile.WriteLine(result);
+            //}
+            LogToTextbox(LogManager.type.INFO, "Инциализация окна.");
         }
 
 
@@ -169,7 +194,36 @@ namespace SysProgUI
         }
 
 
+        private void DataBase_Checked(object sender, RoutedEventArgs e)
+        {
 
+            if(databaseBin != null)
+            {
+
+                ObservableCollection<AccessInfo> tempAI = accessInfosList_DB; //!= null ? SupportClass.DeepClone<ObservableCollection<AccessInfo>>(accessInfosList_DB) : null;
+                ObservableCollection<DllFileInfo> tempFI = dllFileInfoList_DB; //!= null ? SupportClass.DeepClone<ObservableCollection<DllFileInfo>>(dllFileInfoList_DB) : null;
+                accessInfosList_DB = backupCollectionAccessInfo;
+                dllFileInfoList_DB = backupCollectionDllFileInfo;
+                backupCollectionDllFileInfo = tempFI;
+                backupCollectionAccessInfo = tempAI;
+                databaseBin.ItemsSource = accessInfosList_DB;
+                databaseJson.ItemsSource = dllFileInfoList_DB;
+                databaseBin.Items.Refresh();
+                databaseJson.Items.Refresh();
+                if (!(bool)DllRb.IsChecked)
+                {
+                    if (DBmodel != null)
+                        fbpresenter = new FileBasePresenter(this, DBmodel);
+                    LogToTextbox(LogManager.type.INFO,"Режим изменен на работу с базами данных");
+                }
+                else
+                {
+                    if (DBfromfileModel != null)
+                        fbpresenter = new FileBasePresenter(this, DBfromfileModel);
+                    LogToTextbox(LogManager.type.INFO, "Режим изменен на работу с базой файлов");
+                }
+            }
+    }
 
 
 
@@ -181,7 +235,7 @@ namespace SysProgUI
                 foreach (TabItem item in tabArray)
                     if (item.Header.Equals(rb.Content))
                         this.MainTabControl.SelectedItem = item;
-
+            
         }
 
         private void RadioButton_Unchecked(object sender, RoutedEventArgs e)
@@ -214,45 +268,72 @@ namespace SysProgUI
 
 
 
-    public void setControlColor(Control element, SolidColorBrush color)
+    public void setControlColor(System.Windows.Controls.Control element, SolidColorBrush color)
     {
         element.SetCurrentValue(ForegroundProperty, color);
     }
 
-  
-    private void Button_Click_Add(object sender, RoutedEventArgs e)
-    {
-            if (fbpresenter == null) 
-                MessageBox.Show("Не подключена база данных", "Ошибка", MessageBoxButton.OK, MessageBoxImage.Error);
+
+        private void Button_Click_Add(object sender, RoutedEventArgs e)
+        {
+            if (fbpresenter == null)
+                ShowNoConnectedDBError();
             else
             {
+
                 if (checkState())
                 {
                     {
-                        dialogueWindow = new EditDialogue(this, checkState(), ((Button)sender).Content.ToString());
+                        var dialogueWindow = new EditDialogue(this, checkState(), ((Button)sender).Content.ToString());
                         dialogueWindow.Show();
                     }
                 }
                 else
                 {
 
-                    var dialogue = new Microsoft.Win32.OpenFileDialog() { Filter = "Json Files (*.Json)|*.json" };
+                    var dialogue = new Microsoft.Win32.OpenFileDialog() { Filter = "json Files (*.json)|*.json" };
                     var result = dialogue.ShowDialog();
                     if (result == false) return;
                     string path = dialogue.FileName;
                     if (File.Exists(path))
                     {
-                        string resultJsonString = File.ReadAllText(path);
-                        ObjectForOperation = JsonConvert.DeserializeObject<DllFileInfo>(resultJsonString);
-                        CallEventDB("Добавить");
-                        //else
-                        //    MessageBox.Show("Неудалось обработать Json файл", "Ошибка", MessageBoxButton.OK, MessageBoxImage.Error)
+                        string newFileNameJson = path;
+                        if (File.Exists(path) || Directory.Exists(path))
+                        {
+                            BinaryReader binaryReaderJson = new BinaryReader(File.OpenRead(newFileNameJson));
+                            LinkedList<DllFileInfo> listForWriting = new LinkedList<DllFileInfo>();
+                            string jsonString = binaryReaderJson.ReadString();
+                            while (binaryReaderJson.PeekChar() > -1)
+                                jsonString = jsonString + binaryReaderJson.ReadString();
+                            if (jsonString.Length > 2)
+                            {
+                                listForWriting = JsonConvert.DeserializeObject<LinkedList<DllFileInfo>>(jsonString);
+                                binaryReaderJson.Close();
+                            }
+                            while (listForWriting.Count != 0)
+                            {
+                                ObjectForOperation = listForWriting.Last();
+                                listForWriting.RemoveLast();
+                                try
+                                {
+                                    CallEventDB("Добавить");
+                                }
+                                catch (NotUniqueGuidException ex)
+                                {
+                                    MessageBox.Show("Нарушается целостность данных! " + ex.Message);
+                                    LogToTextbox(LogManager.type.ERROR, ex.Message);
+                                }
 
+
+                            }
+                        }
+                        //else
+                        //    System.Windows.MessageBox.Show("Неудалось обработать Json файл", "Ошибка", MessageBoxButton.OK, MessageBoxImage.Error)
                     }
                     else MessageBox.Show("Файла не существует", "Ошибка", MessageBoxButton.OK, MessageBoxImage.Error);
 
                 }
-            }   
+            }
     }
 
     public void SetCurrentlySelectedObject()
@@ -262,15 +343,21 @@ namespace SysProgUI
         else
             ObjectForOperation = (DllFileInfo)databaseJson.SelectedItem;
     }
+        public void ShowNoConnectedDBError()
+        {
+            string errorMes = "Не подключена база данных";
+            MessageBox.Show("Не подключена база данных", "Ошибка", MessageBoxButton.OK, MessageBoxImage.Error);
+            LogToTextbox(LogManager.type.ERROR, errorMes);
+        }
     private void Button_Click_Delete(object sender, RoutedEventArgs e)
      {
             if (fbpresenter == null)
-                MessageBox.Show("Не подключена база данных", "Ошибка", MessageBoxButton.OK, MessageBoxImage.Error);
+                ShowNoConnectedDBError();
             else
             {
                 SetCurrentlySelectedObject();
                 if (ObjectForOperation != null)
-                    DataBaseResultRequest?.Invoke(((Button)sender).Content.ToString());
+                    DataBaseResultRequest?.Invoke(((System.Windows.Controls.Button)sender).Content.ToString());
             }
           
     }
@@ -278,7 +365,7 @@ namespace SysProgUI
     private void Button_Click_Modify(object sender, RoutedEventArgs e)
     {
             if (fbpresenter == null)
-                MessageBox.Show("Не подключена база данных", "Ошибка", MessageBoxButton.OK, MessageBoxImage.Error);
+                ShowNoConnectedDBError();
             else
             {
                 if (dialogueWindow == null)
@@ -295,7 +382,7 @@ namespace SysProgUI
     private void Button_Click_Save(object sender, RoutedEventArgs e)
     {
             if (fbpresenter == null)
-                MessageBox.Show("Не подключена база данных", "Ошибка", MessageBoxButton.OK, MessageBoxImage.Error);
+                ShowNoConnectedDBError();
             else
             {
                 SaveFileDialog saveFileDialog = new SaveFileDialog() { Filter = "Database file (*.mbf)|*.mdf" };
@@ -314,16 +401,61 @@ namespace SysProgUI
 
     }
 
+     
+
     private void Button_Click_Load(object sender, RoutedEventArgs e)
     {
-            var dialogue = new Microsoft.Win32.OpenFileDialog() { Filter = "Database file (*.mbf)|*.mdf" };
-            var result = dialogue.ShowDialog();
-            if (result == false) return;
-            string path = dialogue.FileName;
-            DataBaseMainModel temp = new DataBaseMainModel();
-            temp.path = path;
-            fbpresenter = new FileBasePresenter(this, temp);
-            CallEventDB(((Button)sender).Content.ToString());
+
+            
+
+            if ((bool)DllRb.IsChecked)
+            {
+                LogToTextbox(LogManager.type.WARN, "Button_Click_Load_Fired");
+                var dialogue = new Microsoft.Win32.OpenFileDialog();
+                dialogue.Filter = "Database file (*.mbf)|*.mdf";
+                var result = dialogue.ShowDialog();
+                if (result == false) return;
+                string path = dialogue.FileName;
+                if (File.Exists(path))
+                {
+                    DBmodel = new DataBaseMainModel();
+                    DBmodel.path = path;
+                    if (fbpresenter == null) fbpresenter = new FileBasePresenter(this, DBmodel);
+                    else
+                        fbpresenter.changeModel(DBmodel);
+                }
+              
+
+            }
+            else
+            {
+                System.Windows.Forms.FolderBrowserDialog browse = new System.Windows.Forms.FolderBrowserDialog();
+                var result = browse.ShowDialog();
+                string path = browse.SelectedPath;
+                if (Directory.Exists(path))
+                {
+                    DBfromfileModel = new DataBaseFromFile();
+                    DBfromfileModel.path = path;
+
+                    if (fbpresenter == null) fbpresenter = new FileBasePresenter(this, DBfromfileModel);
+                    else
+                        fbpresenter.changeModel(DBfromfileModel);
+                }
+              
+            }
+
+
+
+            try
+            {
+                CallEventDB(((Button)sender).Content.ToString());
+            }
+            catch (NotUniqueGuidException ex)
+            {
+                MessageBox.Show("Коллизия ключей, используйте другую базу данных/файлов");
+                LogToTextbox(LogManager.type.ERROR, ex.Message);
+            }
+           
             databaseJson.Items.Refresh();
             databaseBin.Items.Refresh();
             

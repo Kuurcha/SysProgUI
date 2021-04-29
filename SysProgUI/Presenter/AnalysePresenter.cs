@@ -25,9 +25,17 @@ namespace SysProgUI.Presenter
               string result =  analyseModel.getResult(viewAnalyse.toAnalyseTB, !viewAnalyse.analyseMode);
 
             if (result.Contains("Ошибка!"))
+            {
                 viewAnalyse.SetColorAnalyse(viewAnalyse.currentLbl, new SolidColorBrush(Color.FromRgb(255, 0, 0)));
+                viewAnalyse.LogToTextbox(Logic.LogManager.type.ERROR, result);
+            }
+               
             else
+            {
                 viewAnalyse.SetColorAnalyse(viewAnalyse.currentLbl, new SolidColorBrush(Color.FromRgb(0, 255, 0)));
+                viewAnalyse.LogToTextbox(Logic.LogManager.type.INFO, "Успешная обработка: " + result);
+            }
+                
             viewAnalyse.analyseLblOutput = result;
         }
     }

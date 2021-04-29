@@ -6,7 +6,7 @@ using System.Collections.ObjectModel;
 using System.Windows;
 namespace SysProgUI.IView
 {
-    interface IViewDatabaseFramework
+    interface IViewDatabaseFramework: MyIView
     {
         // false - .bin, true - .json
         IEnumerable<AccessInfo> AccessInfoList_DB { set; get; }

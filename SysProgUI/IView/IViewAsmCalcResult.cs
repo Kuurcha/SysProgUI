@@ -6,7 +6,7 @@ using System.Windows.Media;
 
 namespace SysProgUI.IView
 {
-    public interface IViewAsm
+    public interface IViewAsm: MyIView
     {
         string asmResult { set; }
         

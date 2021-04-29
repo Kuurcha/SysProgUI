@@ -104,7 +104,7 @@ namespace SysProgUI
         }
         public ObservableCollection<AccessInfo> accessInfosList_DB { set; get; }
         public ObservableCollection<DllFileInfo> dllFileInfoList_DB { set; get; }
-        public string pathForDB { get => throw new NotImplementedException(); set => throw new NotImplementedException(); }
+        public string pathForDB { get; set; }
         private bool checkState()
         {
             switch (Tableswitch.SelectedIndex)
@@ -121,6 +121,7 @@ namespace SysProgUI
             get { return checkState() ? ".dll" : ".json"; }
         }
 
+        private FileBasePresenter fbpresenter;
         public MainWindow()
         {
             InitializeComponent();
@@ -132,9 +133,13 @@ namespace SysProgUI
 
             AsmPresenter asmpr = new AsmPresenter(this, new AsmModel());
             AnalysePresenter analysepr = new AnalysePresenter(this, new AnalyseModel());
-            FileBasePresenter fbpresenter = new FileBasePresenter(this, new DataBaseMainModel());
+      
+            //FileBasePresenter fbpresenter = new FileBasePresenter(this, DataBaseMainModel);
              accessInfosList_DB = new ObservableCollection<AccessInfo>();
             databaseBin.ItemsSource = accessInfosList_DB;
+            databaseJson.ItemsSource = dllFileInfoList_DB;
+
+
             //DataBaseObject temp = new AccessInfo("Kurcha", "Let's pretend this is a hashcode", "password", "yhy@mail.ru");
             DataBaseObject temp = new DllFileInfo("Kurcha", "3.0", DateTime.Now) ;
             using (StreamWriter outputFile = new StreamWriter("D:\\Programming\\testDll.json"))
@@ -217,34 +222,37 @@ namespace SysProgUI
   
     private void Button_Click_Add(object sender, RoutedEventArgs e)
     {
-            if (checkState())
-            {
-                if (dialogueWindow == null)
-                {
-                    dialogueWindow = new EditDialogue(this, checkState(), ((Button)sender).Content.ToString());
-                    dialogueWindow.Show();
-                }
-            }
+            if (fbpresenter == null) 
+                MessageBox.Show("Не подключена база данных", "Ошибка", MessageBoxButton.OK, MessageBoxImage.Error);
             else
             {
-                
-                var dialogue = new Microsoft.Win32.OpenFileDialog() { Filter = "Json Files (*.Json)|*.json" };         
-                var result = dialogue.ShowDialog();
-                if (result == false) return;
-                string path = dialogue.FileName;
-                if (File.Exists(path))
+                if (checkState())
                 {
-                    string resultJsonString = File.ReadAllText(path);
-                    ObjectForOperation = JsonConvert.DeserializeObject<DllFileInfo>(resultJsonString);
-                    CallEventDB("Добавить");
-                    //else
-                    //    MessageBox.Show("Неудалось обработать Json файл", "Ошибка", MessageBoxButton.OK, MessageBoxImage.Error)
+                    {
+                        dialogueWindow = new EditDialogue(this, checkState(), ((Button)sender).Content.ToString());
+                        dialogueWindow.Show();
+                    }
+                }
+                else
+                {
+
+                    var dialogue = new Microsoft.Win32.OpenFileDialog() { Filter = "Json Files (*.Json)|*.json" };
+                    var result = dialogue.ShowDialog();
+                    if (result == false) return;
+                    string path = dialogue.FileName;
+                    if (File.Exists(path))
+                    {
+                        string resultJsonString = File.ReadAllText(path);
+                        ObjectForOperation = JsonConvert.DeserializeObject<DllFileInfo>(resultJsonString);
+                        CallEventDB("Добавить");
+                        //else
+                        //    MessageBox.Show("Неудалось обработать Json файл", "Ошибка", MessageBoxButton.OK, MessageBoxImage.Error)
+
+                    }
+                    else MessageBox.Show("Файла не существует", "Ошибка", MessageBoxButton.OK, MessageBoxImage.Error);
 
                 }
-                else MessageBox.Show("Файла не существует", "Ошибка", MessageBoxButton.OK, MessageBoxImage.Error);
-
-            }
-           
+            }   
     }
 
     public void SetCurrentlySelectedObject()
@@ -255,31 +263,71 @@ namespace SysProgUI
             ObjectForOperation = (DllFileInfo)databaseJson.SelectedItem;
     }
     private void Button_Click_Delete(object sender, RoutedEventArgs e)
-    {
-            SetCurrentlySelectedObject();
-            if (ObjectForOperation!=null)
-                DataBaseResultRequest?.Invoke(((Button)sender).Content.ToString());
+     {
+            if (fbpresenter == null)
+                MessageBox.Show("Не подключена база данных", "Ошибка", MessageBoxButton.OK, MessageBoxImage.Error);
+            else
+            {
+                SetCurrentlySelectedObject();
+                if (ObjectForOperation != null)
+                    DataBaseResultRequest?.Invoke(((Button)sender).Content.ToString());
+            }
+          
     }
         public EditDialogue dialogueWindow = null;
     private void Button_Click_Modify(object sender, RoutedEventArgs e)
     {
-            if (dialogueWindow == null)
+            if (fbpresenter == null)
+                MessageBox.Show("Не подключена база данных", "Ошибка", MessageBoxButton.OK, MessageBoxImage.Error);
+            else
             {
-                SetCurrentlySelectedObject();
-                if (ObjectForOperation != null)
+                if (dialogueWindow == null)
                 {
-                    dialogueWindow = new EditDialogue(this, checkState(), ((Button)sender).Content.ToString());
-                    dialogueWindow.Show();
+                    SetCurrentlySelectedObject();
+                    if (ObjectForOperation != null)
+                    {
+                        dialogueWindow = new EditDialogue(this, checkState(), ((Button)sender).Content.ToString());
+                        dialogueWindow.Show();
+                    }
                 }
             }
         }
     private void Button_Click_Save(object sender, RoutedEventArgs e)
     {
+            if (fbpresenter == null)
+                MessageBox.Show("Не подключена база данных", "Ошибка", MessageBoxButton.OK, MessageBoxImage.Error);
+            else
+            {
+                SaveFileDialog saveFileDialog = new SaveFileDialog() { Filter = "Database file (*.mbf)|*.mdf" };
+                //var result = saveFileDialog.ShowDialog();
+                //string path = result.Value();
+                if (saveFileDialog.ShowDialog() == true)
+                {
+                    pathForDB = saveFileDialog.FileName;
+                    DataBaseResultRequest?.Invoke(((Button)sender).Content.ToString());
+
+                }
+
+            }
+            fbpresenter = null;
+
     }
 
     private void Button_Click_Load(object sender, RoutedEventArgs e)
     {
-    }
+            var dialogue = new Microsoft.Win32.OpenFileDialog() { Filter = "Database file (*.mbf)|*.mdf" };
+            var result = dialogue.ShowDialog();
+            if (result == false) return;
+            string path = dialogue.FileName;
+            DataBaseMainModel temp = new DataBaseMainModel();
+            temp.path = path;
+            fbpresenter = new FileBasePresenter(this, temp);
+            CallEventDB(((Button)sender).Content.ToString());
+            databaseJson.Items.Refresh();
+            databaseBin.Items.Refresh();
+            
+
+        }
 
 
 

@@ -55,7 +55,16 @@ namespace SysProgUI.Presenter
                         viewDatabaseFramework.AccessInfoList_DB = resultUpdate.Where(x => x is AccessInfo).Cast<AccessInfo>();
                     else
                         viewDatabaseFramework.DllFileInfoList_DB = resultUpdate.Where(x => x is DllFileInfo).Cast<DllFileInfo>();
-                    
+                    break;
+                case "Загрузить":
+                    IEnumerable<DataBaseObject> resultLoad = dataBaseModel.Load();
+                    if (mode)
+                        viewDatabaseFramework.AccessInfoList_DB = resultLoad.Where(x => x is AccessInfo).Cast<AccessInfo>();
+                    else
+                        viewDatabaseFramework.DllFileInfoList_DB = resultLoad.Where(x => x is DllFileInfo).Cast<DllFileInfo>();
+                    break;
+                case "Сохранить":
+                    dataBaseModel.Save(viewDatabaseFramework.pathForDB);
                     break;
                 default:
                     break;

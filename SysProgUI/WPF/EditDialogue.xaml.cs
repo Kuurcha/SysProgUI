@@ -33,6 +33,8 @@ namespace SysProgUI
 
             InitializeComponent();
             this.mode = mode;
+            this.mainWindow = mainWindow;
+            this.operation = operation;
             if (mode)
             {
                 FirstLbl.Content = "Логин";
@@ -65,8 +67,7 @@ namespace SysProgUI
                     ThirdTB.Text = tempObject.DateOfLastEdit.ToString();
                 }
             }
-            this.mainWindow = mainWindow;
-            this.operation = operation;
+    
      
            
         }

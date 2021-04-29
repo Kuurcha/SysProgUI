@@ -74,11 +74,11 @@
                             </DataGrid>
                         </TabItem>
                     </TabControl>
-                    <Button FontSize ="16" Grid.Row="0" Grid.Column="2"  Content = "Загрузить" Width="100" Style="{StaticResource FlatButton}" Click="Button_Click_Load" HorizontalAlignment="Left"></Button>
-                    <Button FontSize ="16" Grid.Row="1" Grid.Column="2"  Content = "Сохранить" Width="100" Style="{StaticResource FlatButton}" Click="Button_Click_Save" ></Button>
-                    <Button FontSize ="16" Grid.Row="4" Grid.Column="0"  Content = "Добавить" Style="{StaticResource FlatButton}" Click="Button_Click_Add" ></Button>
-                    <Button FontSize ="16" Grid.Row="4" Grid.Column="1" Content = "Удалить" Style="{StaticResource FlatButton}" Click="Button_Click_Delete"></Button>
-                    <Button FontSize ="16" Grid.Row="4" Grid.Column ="2" Content = "Изменить" Style="{StaticResource FlatButton}" Click="Button_Click_Modify"  HorizontalAlignment="Left" Margin="30,0,0,0"></Button>
+                    <Button Name ="LoadBtn"  FontSize ="16" Grid.Row="0" Grid.Column="2"  Content = "Загрузить" Width="100" Style="{StaticResource FlatButton}" Click="Button_Click_Load" HorizontalAlignment="Left"></Button>
+                    <Button Name ="SaveBtn" FontSize ="16" Grid.Row="1" Grid.Column="2"  Content = "Сохранить" Width="100" Style="{StaticResource FlatButton}" Click="Button_Click_Save" ></Button>
+                    <Button Name ="AddBtn" FontSize ="16" Grid.Row="4" Grid.Column="0"  Content = "Добавить" Style="{StaticResource FlatButton}" Click="Button_Click_Add" ></Button>
+                    <Button Name ="DeleteBtn" FontSize ="16" Grid.Row="4" Grid.Column="1" Content = "Удалить" Style="{StaticResource FlatButton}" Click="Button_Click_Delete"></Button>
+                    <Button Name ="EditBtn" FontSize ="16" Grid.Row="4" Grid.Column ="2" Content = "Изменить" Style="{StaticResource FlatButton}" Click="Button_Click_Modify"  HorizontalAlignment="Left" Margin="30,0,0,0"></Button>
                 </Grid>
             </TabItem>
             <TabItem Style ="{StaticResource HiddenTabs}" Header=" Конструкция языка ">

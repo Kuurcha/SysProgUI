@@ -8,12 +8,19 @@ using System.Collections.ObjectModel;
 using Logic;
 namespace SysProgUI.Presenter
 {
+    /// <summary>
+    /// Презентор для работы с базами даннных/файлов
+    /// </summary>
     class FileBasePresenter
     {
         private IViewDatabaseFramework viewDatabaseFramework;
         private IDataBaseModel dataBaseModel;
         public FileBasePresenter() { }
         
+        /// <summary>
+        /// Сеттер для поля dataBaseModel
+        /// </summary>
+        /// <param name="dataBaseModel"></param>
         public void changeModel(IDataBaseModel dataBaseModel)
         {
             this.dataBaseModel = dataBaseModel;
@@ -26,7 +33,10 @@ namespace SysProgUI.Presenter
             
         }
 
-     
+        /// <summary>
+        /// Метод, связываемый с событием результатом работы которого является проделанная одна из операций в таблицу/ф
+        /// </summary>
+        /// <param name="sender"></param>
         private void OnResultRequest(string sender)
         {
             viewDatabaseFramework.LogToTextbox(LogManager.type.WARN, "On_Result_Request_Fired");

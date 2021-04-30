@@ -8,6 +8,9 @@ using System.Windows.Media;
 
 namespace SysProgUI.Presenter
 {
+    /// <summary>
+    /// Презентер анализатора
+    /// </summary>
     public class AnalysePresenter
     {
         private IAnalyseModel analyseModel;
@@ -19,7 +22,9 @@ namespace SysProgUI.Presenter
             this.viewAnalyse = viewAnalyse;
             viewAnalyse.AnalyseResultRequest += OnResultRequest;
         }
-
+        /// <summary>
+        /// Метод связываемый с событием, отвечающий за исполнение методов модели и получения результировающего сообщения
+        /// </summary>
         public void OnResultRequest()
         {
               string result =  analyseModel.getResult(viewAnalyse.toAnalyseTB, !viewAnalyse.analyseMode);

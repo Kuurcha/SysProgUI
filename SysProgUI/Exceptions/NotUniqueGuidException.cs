@@ -6,7 +6,9 @@ using System.Threading.Tasks;
 
 namespace SysProgUI.IView
 {
-       
+    /// <summary>
+    /// Исключение, что требуется выбрасывать, когда найдены повторы в GUID ключах объектов
+    /// </summary>
     class NotUniqueGuidException: Exception
     {
         public NotUniqueGuidException() : base()

@@ -24,9 +24,9 @@ namespace SysProgUI
         bool mode = false;
         string operation = null;
         /// <summary>
-        /// 
+        /// Метод инициализации диалогового окна
         /// </summary>
-        /// <param name="mainWindow"></param>
+        /// <param name="mainWindow">Экземпляр основного окна</param>
         /// <param name="mode">true = AccessInfo/False = DllFileInfo</param>
         public EditDialogue(MainWindow mainWindow, bool mode, string operation)
         {
@@ -71,15 +71,30 @@ namespace SysProgUI
      
            
         }
+        /// <summary>
+        /// Метод стирающий экземпляр dialogueWindow из основного окна
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void Window_Closing(object sender, CancelEventArgs e)
         {
             mainWindow.dialogueWindow = null;
         }
+        /// <summary>
+        /// Метод корректного закрытия окна на кнопку отмена
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void Button_Click_Cancel(object sender, RoutedEventArgs e)
         {
             mainWindow.ObjectForOperation = null;
             this.Close();
         }
+        /// <summary>
+        /// Метод кнопки потверждения и заполнение полей
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void Button_Click_Confirm(object sender, RoutedEventArgs e)
         {
             if (mode)
@@ -91,8 +106,11 @@ namespace SysProgUI
                 bool testEmail = (Email.Contains('@') && Email.Contains('.')) && (Email.ToCharArray().Count(x => x == '@') == 1) && (Email.ToCharArray().Count(x => x == '.') == 1);
                 if (!testEmail)
                 {
-                    MessageBox.Show("Неверный формат Email!", "Ошибка", MessageBoxButton.OK, MessageBoxImage.Error);
+                    string errMes = "Неверный формат Email!";
+                    MessageBox.Show(errMes, "Ошибка", MessageBoxButton.OK, MessageBoxImage.Error);
+                    mainWindow.LogToTextbox(LogManager.type.ERROR,errMes);
                     mainWindow.ObjectForOperation = null;
+                    
                 }
                    
                 else
@@ -108,8 +126,10 @@ namespace SysProgUI
                         tempObject.Login = login;
                         mainWindow.ObjectForOperation = tempObject;
                     }
-                    MessageBox.Show("Объект с полями" + Environment.NewLine + "Логин: " + login + Environment.NewLine + "Хеш: " + Hash + Environment.NewLine + "Пароль: " + Password + Environment.NewLine + "Email: " + Email, "Успешно!", MessageBoxButton.OK, MessageBoxImage.Exclamation);
+                    string sucMes = "Объект с полями "  + "Логин: " + login +  " Хеш: " + Hash +  " Пароль: " + Password + " Email: " + Email;
+                    MessageBox.Show(sucMes, "Успешно!", MessageBoxButton.OK, MessageBoxImage.Exclamation);
                     mainWindow.CallEventDB(operation);
+                    mainWindow.LogToTextbox(LogManager.type.INFO, sucMes );
                     this.Close();
                 }    
             }
@@ -123,7 +143,10 @@ namespace SysProgUI
                 tempObject.FileVersion = FileVersion;
                 tempObject.DateOfLastEdit = DateTime.Parse(EditDate);
                 mainWindow.ObjectForOperation = tempObject;
+                string sucMes = "Объект " + tempObject.ToString();
+                MessageBox.Show(sucMes, "Успешно!", MessageBoxButton.OK, MessageBoxImage.Exclamation);
                 mainWindow.CallEventDB(operation);
+                mainWindow.LogToTextbox(LogManager.type.INFO, sucMes);
                 this.Close();
             }
         }

@@ -12,6 +12,10 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <Compile Remove="SupportClass.cs" />
+  </ItemGroup>
+
+  <ItemGroup>
     <None Remove="AsmFunc.dll" />
   </ItemGroup>
 

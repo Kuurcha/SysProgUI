@@ -6,6 +6,9 @@ using System.Collections.ObjectModel;
 using System.Windows;
 namespace SysProgUI.IView
 {
+    /// <summary>
+    /// IView для баз данных
+    /// </summary>
     interface IViewDatabaseFramework: MyIView
     {
         // false - .bin, true - .json

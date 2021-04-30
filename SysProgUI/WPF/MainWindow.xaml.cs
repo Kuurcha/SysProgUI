@@ -70,6 +70,10 @@ namespace SysProgUI
 
         public event Action<string> DataBaseResultRequest;
 
+        /// <summary>
+        /// Метод показывающий пользователю сообщение об ошибке при работе с Ассемблером
+        /// </summary>
+        /// <param name="message">Сообщение об ошибке</param>
         public void ShowMessageBoxAsm(string message)
         {
             System.Windows.MessageBox.Show(message, "Ошибка", MessageBoxButton.OK, MessageBoxImage.Error);
@@ -78,6 +82,9 @@ namespace SysProgUI
         bool mode = false;
 
 
+        /// <summary>
+        /// Список AccessInfo который связан с таблицей DataGrid
+        /// </summary>
         public IEnumerable<AccessInfo> AccessInfoList_DB
         {
             get { return accessInfosList_DB;  }
@@ -92,6 +99,9 @@ namespace SysProgUI
                 databaseBin.ItemsSource = accessInfosList_DB;
             }
         }
+        /// <summary>
+        /// Список DllFileInfo который связан с таблицей DataGrid
+        /// </summary>
         public IEnumerable<DllFileInfo> DllFileInfoList_DB
         {
             get { return DllFileInfoList_DB; }
@@ -117,6 +127,10 @@ namespace SysProgUI
         private ObservableCollection<DllFileInfo> backupCollectionDllFileInfo;
            
         public string pathForDB { get; set; }
+        /// <summary>
+        /// Метод, Проверяющий какая конкретная таблица выбрана: Json или Bin 
+        /// </summary>
+        /// <returns>True - .bin, False => .json</returns>
         private bool checkState()
         {
             switch (Tableswitch.SelectedIndex)
@@ -129,6 +143,9 @@ namespace SysProgUI
                     return false;
             }
         }
+        /// <summary>
+        /// Метод отвечающий за передачу выбранного режима в презентер
+        /// </summary>
         public string dbMode { 
             get { return checkState() ? ".dll" : ".json"; }
         }
@@ -139,12 +156,19 @@ namespace SysProgUI
 
         LogManager logManager;
 
-        
+        /// <summary>
+        /// Метод для логирования действий прогграммы
+        /// </summary>
+        /// <param name="type">Тип ошибки</param>
+        /// <param name="logmessage">Сообщение об ошибке</param>
         public void LogToTextbox(LogManager.type type, string logmessage)
         {
             logManager.log(type, logmessage);
             loggerTB.Text = logManager.getLog();
         }
+        /// <summary>
+        /// Метод инициализации окна
+        /// </summary>
         public MainWindow()
         {
             InitializeComponent();
@@ -176,24 +200,40 @@ namespace SysProgUI
 
 
 
-
+        /// <summary>
+        /// Вызов события базы данных, если на него кто-либо подписан
+        /// </summary>
+        /// <param name="mode">Конкретная операция из события</param>
         public void CallEventDB(string mode)
         {
             DataBaseResultRequest?.Invoke(mode);
         }
-
+        /// <summary>
+        /// Вызов события подсчета ассемблерных функций, если на него кто-либо подписан
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void Button_Click_Calc(object sender, RoutedEventArgs e)
         {
             AsmResultRequest?.Invoke();
             
         }
+        /// <summary>
+        /// Вызов события анализатора, если на него кто-либо подписан
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void Button_Click_Analyse(object sender, RoutedEventArgs e)
         {
             AnalyseResultRequest?.Invoke();
             
         }
 
-
+        /// <summary>
+        /// Переключение объектов баз данных в зависимости от выбора режима работы с .dbf или же с файлами
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void DataBase_Checked(object sender, RoutedEventArgs e)
         {
 
@@ -226,7 +266,11 @@ namespace SysProgUI
     }
 
 
-
+        /// <summary>
+        /// Метод отвечающий за смену вкладки
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void RadioButton_Checked(object sender, RoutedEventArgs e)
         {
             RadioButton rb = sender as RadioButton;
@@ -237,20 +281,32 @@ namespace SysProgUI
                         this.MainTabControl.SelectedItem = item;
             
         }
-
+        /// <summary>
+        /// Метод отвечающий за смену вкладки и возвращение цвета после прекращение его выделения
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void RadioButton_Unchecked(object sender, RoutedEventArgs e)
         {
             RadioButton rb = sender as RadioButton;
             rb.SetCurrentValue(ForegroundProperty, new SolidColorBrush(Color.FromRgb(219, 220, 230)));
 
         }
-
+        /// <summary>
+        /// Визуальная смена операции в зависимости от выбранного пункта в Radiobutton
+        /// </summary>
+        /// <param name="rb"></param>
         public void setOperation(RadioButton rb)
         {
             if (rb.Content != null)
                 if (rb.Content.Equals("Умножение")) OpLbl.Content = "X";
                 else OpLbl.Content = "\\";
         }
+        /// <summary>
+        /// Событие отвечающее за нажатие на Radiobutton
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void RadioButton_Checked_Asm(object sender, RoutedEventArgs e)
         {
             RadioButton rb = sender as RadioButton;
@@ -258,7 +314,11 @@ namespace SysProgUI
 
 
         }
-
+        /// <summary>
+        /// Событие отвечающее за разжатие RadioButton
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void RadioButton_Unchecked_Asm(object sender, RoutedEventArgs e)
     {
         RadioButton rb = sender as RadioButton;
@@ -267,13 +327,21 @@ namespace SysProgUI
     }
 
 
-
+        /// <summary>
+        /// Установка цвета на элемент
+        /// </summary>
+        /// <param name="element">Элемент для установки</param>
+        /// <param name="color">Цвет для установки</param>
     public void setControlColor(System.Windows.Controls.Control element, SolidColorBrush color)
     {
         element.SetCurrentValue(ForegroundProperty, color);
     }
 
-
+        /// <summary>
+        /// Событие добавления в базу данных при нажатии на кнопку
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void Button_Click_Add(object sender, RoutedEventArgs e)
         {
             if (fbpresenter == null)
@@ -336,6 +404,9 @@ namespace SysProgUI
             }
     }
 
+    /// <summary>
+    /// Получение текущего выделенного пользователем объекта
+    /// </summary>
     public void SetCurrentlySelectedObject()
     {
         if (checkState())
@@ -343,13 +414,21 @@ namespace SysProgUI
         else
             ObjectForOperation = (DllFileInfo)databaseJson.SelectedItem;
     }
+        /// <summary>
+        /// Метод логирующий и отвечающий за показыванию пользователя конкретного сообщения об ошибке (об отсуствии подключенной бд)
+        /// </summary>
         public void ShowNoConnectedDBError()
         {
             string errorMes = "Не подключена база данных";
             MessageBox.Show("Не подключена база данных", "Ошибка", MessageBoxButton.OK, MessageBoxImage.Error);
             LogToTextbox(LogManager.type.ERROR, errorMes);
         }
-    private void Button_Click_Delete(object sender, RoutedEventArgs e)
+        /// <summary>
+        /// Метод удаления из базы данных при нажатии на кнопку
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void Button_Click_Delete(object sender, RoutedEventArgs e)
      {
             if (fbpresenter == null)
                 ShowNoConnectedDBError();
@@ -362,7 +441,12 @@ namespace SysProgUI
           
     }
         public EditDialogue dialogueWindow = null;
-    private void Button_Click_Modify(object sender, RoutedEventArgs e)
+    /// <summary>
+    /// Метод модификации элемента базы данных
+    /// </summary>
+    /// <param name="sender"></param>
+    /// <param name="e"></param>
+        private void Button_Click_Modify(object sender, RoutedEventArgs e)
     {
             if (fbpresenter == null)
                 ShowNoConnectedDBError();
@@ -379,6 +463,11 @@ namespace SysProgUI
                 }
             }
         }
+    /// <summary>
+    /// Метод сохранения базы данных по нажатию кнопки
+    /// </summary>
+    /// <param name="sender"></param>
+    /// <param name="e"></param>
     private void Button_Click_Save(object sender, RoutedEventArgs e)
     {
             if (fbpresenter == null)
@@ -402,7 +491,11 @@ namespace SysProgUI
     }
 
      
-
+    /// <summary>
+    /// Метод загрузки базы данных по нажатию кнопки
+    /// </summary>
+    /// <param name="sender"></param>
+    /// <param name="e"></param>
     private void Button_Click_Load(object sender, RoutedEventArgs e)
     {
 

@@ -5,6 +5,9 @@ using SysProgUI.IView;
 using Logic.Model;
 namespace SysProgUI.Presenter
 {
+    /// <summary>
+    /// Презентер для исполнения ассемблерных вставок
+    /// </summary>
     class AsmPresenter
     {
         private IViewAsm viewAsm;
@@ -16,6 +19,9 @@ namespace SysProgUI.Presenter
             this.viewAsm = viewAsm;
             viewAsm.AsmResultRequest += OnResultRequest;
         }
+        /// <summary>
+        /// Метод, связаываемый с событием возвращающий результат операции или сообщение об ошибке.
+        /// </summary>
         private void OnResultRequest()
         {
             string[] tempResult = asmModel.DoOperation(viewAsm.aValue, viewAsm.bValue, viewAsm.AsmMode);

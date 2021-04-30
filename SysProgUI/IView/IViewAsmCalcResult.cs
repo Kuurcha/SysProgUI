@@ -6,6 +6,9 @@ using System.Windows.Media;
 
 namespace SysProgUI.IView
 {
+    /// <summary>
+    /// IView для ассемблерных функций
+    /// </summary>
     public interface IViewAsm: MyIView
     {
         string asmResult { set; }
@@ -14,6 +17,10 @@ namespace SysProgUI.IView
         string bValue { get; }
         bool AsmMode { get; }
 
+        /// <summary>
+        /// Показывает сообщение об ошибке assembler
+        /// </summary>
+        /// <param name="message">сообщение об ошибке</param>
         public void ShowMessageBoxAsm(string message);
 
         public event Action AsmResultRequest;

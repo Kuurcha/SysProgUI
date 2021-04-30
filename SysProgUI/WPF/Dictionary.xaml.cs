@@ -37,16 +37,30 @@ namespace SysProgUI.WPF.Resource
             else
                 obj.SetCurrentValue(Control.ForegroundProperty, color);
         }
+        /// <summary>
+        /// Метод отвечающий за правильный цвет кнопок при начале выделения
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void Universal_MouseEnter(object sender, MouseEventArgs e)
         {
             SetCurrentForecolor(sender, new SolidColorBrush(Color.FromRgb(120, 120, 120)));
         }
-
+        /// <summary>
+        /// Метод отвечающий за правильный цвет кнопок при конце выделения
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void Universal_MouseLeave(object sender, MouseEventArgs e)
         {
             SetCurrentForecolor(sender, new SolidColorBrush(Color.FromRgb(219, 220, 230)));
 
         }
+        /// <summary>
+        /// Метод кнопки закрытия
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void Button_Click(object sender, RoutedEventArgs e)
         {
            
@@ -54,11 +68,21 @@ namespace SysProgUI.WPF.Resource
          
         }
 
+        /// <summary>
+        /// Метод кнопки сворачивания
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void Button_Click_1(object sender, RoutedEventArgs e)
         {
             Window.GetWindow((Control)sender).WindowState = WindowState.Minimized;
         }
 
+        /// <summary>
+        /// Метод отвечающий за корректный перенос интерфейса мышкой
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void Border_MouseDown(object sender, MouseButtonEventArgs e)
         {
             Window temp = Window.GetWindow((UIElement)sender);

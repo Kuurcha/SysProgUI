@@ -87,8 +87,9 @@ namespace SysProgUI
         /// </summary>
         public IEnumerable<AccessInfo> AccessInfoList_DB
         {
-            get { return accessInfosList_DB;  }
-            set {
+            get { return accessInfosList_DB; }
+            set
+            {
                 ObservableCollection<AccessInfo> temp = new ObservableCollection<AccessInfo>();
                 foreach (AccessInfo var in value)
                 {
@@ -105,7 +106,8 @@ namespace SysProgUI
         public IEnumerable<DllFileInfo> DllFileInfoList_DB
         {
             get { return DllFileInfoList_DB; }
-            set {
+            set
+            {
                 ObservableCollection<DllFileInfo> temp = new ObservableCollection<DllFileInfo>();
                 var test = value;
                 for (int i = 0; i < value.Count(); i++)
@@ -114,7 +116,7 @@ namespace SysProgUI
                     if (tempObj is DllFileInfo)
                         temp.Add((DllFileInfo)tempObj);
                 }
-            
+
                 dllFileInfoList_DB = temp;
                 databaseJson.Items.Refresh();
                 databaseJson.ItemsSource = dllFileInfoList_DB;
@@ -125,7 +127,7 @@ namespace SysProgUI
 
         private ObservableCollection<AccessInfo> backupCollectionAccessInfo;
         private ObservableCollection<DllFileInfo> backupCollectionDllFileInfo;
-           
+
         public string pathForDB { get; set; }
         /// <summary>
         /// Метод, Проверяющий какая конкретная таблица выбрана: Json или Bin 
@@ -146,13 +148,14 @@ namespace SysProgUI
         /// <summary>
         /// Метод отвечающий за передачу выбранного режима в презентер
         /// </summary>
-        public string dbMode { 
+        public string dbMode
+        {
             get { return checkState() ? ".dll" : ".json"; }
         }
 
         private FileBasePresenter fbpresenter;
         private DataBaseMainModel DBmodel;
-        private DataBaseFromFile  DBfromfileModel;
+        private DataBaseFromFile DBfromfileModel;
 
         LogManager logManager;
 
@@ -180,15 +183,15 @@ namespace SysProgUI
 
             AsmPresenter asmpr = new AsmPresenter(this, new AsmModel());
             AnalysePresenter analysepr = new AnalysePresenter(this, new AnalyseModel());
-      
+
             //FileBasePresenter fbpresenter = new FileBasePresenter(this, DataBaseMainModel);
-             accessInfosList_DB = new ObservableCollection<AccessInfo>();
+            accessInfosList_DB = new ObservableCollection<AccessInfo>();
             databaseBin.ItemsSource = accessInfosList_DB;
             databaseJson.ItemsSource = dllFileInfoList_DB;
             logManager = new LogManager();
 
             //DataBaseObject temp = new AccessInfo("Kurcha", "Let's pretend this is a hashcode", "password", "yhy@mail.ru");
-            DataBaseObject temp = new DllFileInfo("Kurcha", "3.0", DateTime.Now) ;
+            DataBaseObject temp = new DllFileInfo("Kurcha", "3.0", DateTime.Now);
 
             //using (StreamWriter outputFile = new StreamWriter("D:\\Programming\\testDll.json"))
             //{
@@ -216,7 +219,7 @@ namespace SysProgUI
         private void Button_Click_Calc(object sender, RoutedEventArgs e)
         {
             AsmResultRequest?.Invoke();
-            
+
         }
         /// <summary>
         /// Вызов события анализатора, если на него кто-либо подписан
@@ -226,7 +229,7 @@ namespace SysProgUI
         private void Button_Click_Analyse(object sender, RoutedEventArgs e)
         {
             AnalyseResultRequest?.Invoke();
-            
+
         }
 
         /// <summary>
@@ -237,7 +240,7 @@ namespace SysProgUI
         private void DataBase_Checked(object sender, RoutedEventArgs e)
         {
 
-            if(databaseBin != null)
+            if (databaseBin != null)
             {
 
                 ObservableCollection<AccessInfo> tempAI = accessInfosList_DB; //!= null ? SupportClass.DeepClone<ObservableCollection<AccessInfo>>(accessInfosList_DB) : null;
@@ -254,7 +257,7 @@ namespace SysProgUI
                 {
                     if (DBmodel != null)
                         fbpresenter = new FileBasePresenter(this, DBmodel);
-                    LogToTextbox(LogManager.type.INFO,"Режим изменен на работу с базами данных");
+                    LogToTextbox(LogManager.type.INFO, "Режим изменен на работу с базами данных");
                 }
                 else
                 {
@@ -263,7 +266,7 @@ namespace SysProgUI
                     LogToTextbox(LogManager.type.INFO, "Режим изменен на работу с базой файлов");
                 }
             }
-    }
+        }
 
 
         /// <summary>
@@ -279,7 +282,7 @@ namespace SysProgUI
                 foreach (TabItem item in tabArray)
                     if (item.Header.Equals(rb.Content))
                         this.MainTabControl.SelectedItem = item;
-            
+
         }
         /// <summary>
         /// Метод отвечающий за смену вкладки и возвращение цвета после прекращение его выделения
@@ -320,11 +323,11 @@ namespace SysProgUI
         /// <param name="sender"></param>
         /// <param name="e"></param>
         private void RadioButton_Unchecked_Asm(object sender, RoutedEventArgs e)
-    {
-        RadioButton rb = sender as RadioButton;
-        setOperation(rb);
+        {
+            RadioButton rb = sender as RadioButton;
+            setOperation(rb);
 
-    }
+        }
 
 
         /// <summary>
@@ -332,10 +335,10 @@ namespace SysProgUI
         /// </summary>
         /// <param name="element">Элемент для установки</param>
         /// <param name="color">Цвет для установки</param>
-    public void setControlColor(System.Windows.Controls.Control element, SolidColorBrush color)
-    {
-        element.SetCurrentValue(ForegroundProperty, color);
-    }
+        public void setControlColor(System.Windows.Controls.Control element, SolidColorBrush color)
+        {
+            element.SetCurrentValue(ForegroundProperty, color);
+        }
 
         /// <summary>
         /// Событие добавления в базу данных при нажатии на кнопку
@@ -402,18 +405,18 @@ namespace SysProgUI
 
                 }
             }
-    }
+        }
 
-    /// <summary>
-    /// Получение текущего выделенного пользователем объекта
-    /// </summary>
-    public void SetCurrentlySelectedObject()
-    {
-        if (checkState())
-            ObjectForOperation = (AccessInfo)databaseBin.SelectedItem;
-        else
-            ObjectForOperation = (DllFileInfo)databaseJson.SelectedItem;
-    }
+        /// <summary>
+        /// Получение текущего выделенного пользователем объекта
+        /// </summary>
+        public void SetCurrentlySelectedObject()
+        {
+            if (checkState())
+                ObjectForOperation = (AccessInfo)databaseBin.SelectedItem;
+            else
+                ObjectForOperation = (DllFileInfo)databaseJson.SelectedItem;
+        }
         /// <summary>
         /// Метод логирующий и отвечающий за показыванию пользователя конкретного сообщения об ошибке (об отсуствии подключенной бд)
         /// </summary>
@@ -429,7 +432,7 @@ namespace SysProgUI
         /// <param name="sender"></param>
         /// <param name="e"></param>
         private void Button_Click_Delete(object sender, RoutedEventArgs e)
-     {
+        {
             if (fbpresenter == null)
                 ShowNoConnectedDBError();
             else
@@ -438,16 +441,16 @@ namespace SysProgUI
                 if (ObjectForOperation != null)
                     DataBaseResultRequest?.Invoke(((System.Windows.Controls.Button)sender).Content.ToString());
             }
-          
-    }
+
+        }
         public EditDialogue dialogueWindow = null;
-    /// <summary>
-    /// Метод модификации элемента базы данных
-    /// </summary>
-    /// <param name="sender"></param>
-    /// <param name="e"></param>
+        /// <summary>
+        /// Метод модификации элемента базы данных
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void Button_Click_Modify(object sender, RoutedEventArgs e)
-    {
+        {
             if (fbpresenter == null)
                 ShowNoConnectedDBError();
             else
@@ -463,13 +466,13 @@ namespace SysProgUI
                 }
             }
         }
-    /// <summary>
-    /// Метод сохранения базы данных по нажатию кнопки
-    /// </summary>
-    /// <param name="sender"></param>
-    /// <param name="e"></param>
-    private void Button_Click_Save(object sender, RoutedEventArgs e)
-    {
+        /// <summary>
+        /// Метод сохранения базы данных по нажатию кнопки
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void Button_Click_Save(object sender, RoutedEventArgs e)
+        {
             if (fbpresenter == null)
                 ShowNoConnectedDBError();
             else
@@ -485,21 +488,29 @@ namespace SysProgUI
                 }
 
             }
-  
+
             fbpresenter = null;
 
-    }
+        }
+        /// <summary>
+        /// Метод для вывода информации пользователю
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void Button_Click_Info(object sender, RoutedEventArgs e)
+        {
+            MessageBox.Show("Внимание! Все конструкции изнутри должны быть пустыми." + Environment.NewLine + "Масивы и условия константы или объявления должны быть константами", "Внимание!", MessageBoxButton.OK, MessageBoxImage.Information);
+        }
 
-     
-    /// <summary>
-    /// Метод загрузки базы данных по нажатию кнопки
-    /// </summary>
-    /// <param name="sender"></param>
-    /// <param name="e"></param>
-    private void Button_Click_Load(object sender, RoutedEventArgs e)
-    {
+        /// <summary>
+        /// Метод загрузки базы данных по нажатию кнопки
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void Button_Click_Load(object sender, RoutedEventArgs e)
+        {
 
-            
+
 
             if ((bool)DllRb.IsChecked)
             {
@@ -517,7 +528,7 @@ namespace SysProgUI
                     else
                         fbpresenter.changeModel(DBmodel);
                 }
-              
+
 
             }
             else
@@ -534,7 +545,7 @@ namespace SysProgUI
                     else
                         fbpresenter.changeModel(DBfromfileModel);
                 }
-              
+
             }
 
 
@@ -548,25 +559,25 @@ namespace SysProgUI
                 MessageBox.Show("Коллизия ключей, используйте другую базу данных/файлов");
                 LogToTextbox(LogManager.type.ERROR, ex.Message);
             }
-           
+
             databaseJson.Items.Refresh();
             databaseBin.Items.Refresh();
-            
+
 
         }
 
 
 
         private void RadioButton_Checked_1(object sender, RoutedEventArgs e)
-    {
-        RadioButton rb = sender as RadioButton;
-        if (rb.Name.Equals("Foreach"))
-            mode = false;
-        else
-            mode = true;
+        {
+            RadioButton rb = sender as RadioButton;
+            if (rb.Name.Equals("Foreach"))
+                mode = false;
+            else
+                mode = true;
+        }
+
+
+
     }
-
-
-
-}
 }

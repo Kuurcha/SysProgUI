@@ -75,7 +75,7 @@
                         </TabItem>
                     </TabControl>
                     <Button Name ="LoadBtn"  FontSize ="16" Grid.Row="0" Grid.Column="2"  Content = "Загрузить" Width="100" Style="{StaticResource FlatButton}" Click="Button_Click_Load" HorizontalAlignment="Left"></Button>
-                    <Button Name ="SaveBtn" FontSize ="16" Grid.Row="1" Grid.Column="2"  Content = "Сохранить" Width="100" Style="{StaticResource FlatButton}" Click="Button_Click_Save" ></Button>
+                    <!--<Button Name ="SaveBtn" FontSize ="16" Grid.Row="1" Grid.Column="2"  Content = "Сохранить" Width="100" Style="{StaticResource FlatButton}" Click="Button_Click_Save" ></Button>-->
                     <Button Name ="AddBtn" FontSize ="16" Grid.Row="4" Grid.Column="0"  Content = "Добавить" Style="{StaticResource FlatButton}" Click="Button_Click_Add" ></Button>
                     <Button Name ="DeleteBtn" FontSize ="16" Grid.Row="4" Grid.Column="1" Content = "Удалить" Style="{StaticResource FlatButton}" Click="Button_Click_Delete"></Button>
                     <Button Name ="EditBtn" FontSize ="16" Grid.Row="4" Grid.Column ="2" Content = "Изменить" Style="{StaticResource FlatButton}" Click="Button_Click_Modify"  HorizontalAlignment="Left" Margin="30,0,0,0"></Button>
@@ -96,6 +96,7 @@
                     </Grid.RowDefinitions>
                     <RadioButton Name ="ForeachRB" Style="{StaticResource RadioButtonText}" IsChecked="True" Content ="Foreach" GroupName="Temp"/>
                     <RadioButton Style="{StaticResource RadioButtonText}" Grid.Row ="1" Content="If/Else" GroupName="Temp" />
+                    <Button Name ="info" FontSize ="16" Grid.Row="1" Grid.Column="1" HorizontalAlignment="Right"  Content = "Info" Style="{StaticResource FlatButton}" Click="Button_Click_Info" ></Button>
                     <TextBox Name ="languageConstructTB" Grid.Row="2" Foreground="#DBDCE6" FontSize="14" Grid.ColumnSpan="2" Background="Transparent" BorderThickness="3" Height="460" VerticalAlignment="Stretch"></TextBox>
                     <Button FontSize ="16" Grid.Row="3"  Content = "Получить" Style="{StaticResource FlatButton}" Click="Button_Click_Analyse"></Button>
                     <Label  Name ="infoLabel" Grid.Row ="3" Grid.Column ="1" HorizontalAlignment="Left" VerticalAlignment="Top" Content="Тут могла быть ваша реклама" FontSize="18" Foreground="#D8DBFF"></Label>
